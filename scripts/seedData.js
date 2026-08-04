@@ -8,8 +8,8 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 dotenv.config({ path: path.join(__dirname, '../.env') });
 
-import Category from '../api/models/Category.js';
-import Product from '../api/models/Product.js';
+import Category from '../api/_models/Category.js';
+import Product from '../api/_models/Product.js';
 
 const categories = [
   { name: 'Beds', desc: 'Beautiful custom beds for kids', status: 'Active', image: '/images/bunk-bed-1.jpg' },

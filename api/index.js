@@ -23,15 +23,15 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-import authRoutes from './routes/authRoutes.js';
-import productRoutes from './routes/productRoutes.js';
-import messageRoutes from './routes/messageRoutes.js';
-import orderRoutes from './routes/orderRoutes.js';
-import categoryRoutes from './routes/categoryRoutes.js';
-import reviewRoutes from './routes/reviewRoutes.js';
-import contentRoutes from './routes/contentRoutes.js';
-import dashboardRoutes from './routes/dashboardRoutes.js';
-import uploadRoutes from './routes/uploadRoutes.js';
+import authRoutes from './_routes/authRoutes.js';
+import productRoutes from './_routes/productRoutes.js';
+import messageRoutes from './_routes/messageRoutes.js';
+import orderRoutes from './_routes/orderRoutes.js';
+import categoryRoutes from './_routes/categoryRoutes.js';
+import reviewRoutes from './_routes/reviewRoutes.js';
+import contentRoutes from './_routes/contentRoutes.js';
+import dashboardRoutes from './_routes/dashboardRoutes.js';
+import uploadRoutes from './_routes/uploadRoutes.js';
 
 // Setup routes
 app.use('/api/auth', authRoutes);

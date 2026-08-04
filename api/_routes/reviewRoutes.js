@@ -1,6 +1,6 @@
 import express from 'express';
-import Review from '../models/Review.js';
-import { protect, admin } from '../middleware/auth.js';
+import Review from '../_models/Review.js';
+import { protect, admin } from '../_middleware/auth.js';
 
 const router = express.Router();
 

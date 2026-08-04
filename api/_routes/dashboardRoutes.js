@@ -1,8 +1,8 @@
 import express from 'express';
-import { protect, admin } from '../middleware/auth.js';
-import Order from '../models/Order.js';
-import Message from '../models/Message.js';
-import Product from '../models/Product.js';
+import { protect, admin } from '../_middleware/auth.js';
+import Order from '../_models/Order.js';
+import Message from '../_models/Message.js';
+import Product from '../_models/Product.js';
 
 const router = express.Router();
 

@@ -1,6 +1,6 @@
 import express from 'express';
-import { upload } from '../config/cloudinary.js';
-import { protect, admin } from '../middleware/auth.js';
+import { upload } from '../_config/cloudinary.js';
+import { protect, admin } from '../_middleware/auth.js';
 
 const router = express.Router();
 

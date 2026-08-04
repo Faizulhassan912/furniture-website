@@ -1,8 +1,8 @@
 import express from 'express';
-import Product from '../models/Product.js';
-import Category from '../models/Category.js';
-import { protect } from '../middleware/auth.js';
-import { upload } from '../config/cloudinary.js';
+import Product from '../_models/Product.js';
+import Category from '../_models/Category.js';
+import { protect } from '../_middleware/auth.js';
+import { upload } from '../_config/cloudinary.js';
 
 const router = express.Router();
 

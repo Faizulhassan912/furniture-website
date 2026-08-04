@@ -1,7 +1,7 @@
 import express from 'express';
-import Order from '../models/Order.js';
-import { protect, admin } from '../middleware/auth.js';
-import { upload } from '../config/cloudinary.js';
+import Order from '../_models/Order.js';
+import { protect, admin } from '../_middleware/auth.js';
+import { upload } from '../_config/cloudinary.js';
 
 const router = express.Router();
 

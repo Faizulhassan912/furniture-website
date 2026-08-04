@@ -8,7 +8,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 dotenv.config({ path: path.join(__dirname, '../.env') });
 
-import Content from '../api/models/Content.js';
+import Content from '../api/_models/Content.js';
 
 const contentData = [
   {

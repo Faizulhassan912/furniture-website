@@ -1,6 +1,6 @@
 import express from 'express';
-import Content from '../models/Content.js';
-import { protect, admin } from '../middleware/auth.js';
+import Content from '../_models/Content.js';
+import { protect, admin } from '../_middleware/auth.js';
 
 const router = express.Router();
 
