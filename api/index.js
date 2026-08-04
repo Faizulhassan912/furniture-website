@@ -4,11 +4,13 @@ import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 import dns from 'dns';
 
-// Fix querySrv ECONNREFUSED issues on Windows / local ISP DNS blocking
-try {
-  dns.setServers(['8.8.8.8', '8.8.4.4']);
-} catch (e) {
-  console.log('Could not set custom DNS servers:', e.message);
+// Fix querySrv ECONNREFUSED issues on Windows / local ISP DNS blocking (only locally)
+if (!process.env.VERCEL) {
+  try {
+    dns.setServers(['8.8.8.8', '8.8.4.4']);
+  } catch (e) {
+    console.log('Could not set custom DNS servers:', e.message);
+  }
 }
 
 // Load environment variables from .env file
@@ -56,14 +58,18 @@ app.use((err, req, res, next) => {
 });
 
 // 4. Connect to MongoDB Database
-mongoose.connect(process.env.MONGO_URI)
-  .then(() => console.log("Connected to MongoDB Atlas successfully!"))
-  .catch((err) => console.error("Database connection failed:", err));
+if (mongoose.connection.readyState === 0) {
+  mongoose.connect(process.env.MONGO_URI)
+    .then(() => console.log("Connected to MongoDB Atlas successfully!"))
+    .catch((err) => console.error("Database connection failed:", err));
+}
 
-// 4. Start the server (For Render, Heroku, DigitalOcean, etc.)
-const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
-});
+// Only listen on port if NOT running on Vercel (Vercel manages HTTP serverless invocations)
+if (!process.env.VERCEL) {
+  const PORT = process.env.PORT || 5000;
+  app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
+  });
+}
 
 export default app;
