@@ -47,7 +47,7 @@ function AdminLayout({ activeTab, setActiveTab, children }) {
 
   const handleLogout = () => {
     localStorage.removeItem('adminToken');
-    window.location.href = '/admin';
+    window.location.href = '/';
   };
 
   return (

@@ -18,7 +18,7 @@ function AdminDashboard() {
   useEffect(() => {
     const token = localStorage.getItem('adminToken');
     if (!token) {
-      navigate('/admin');
+      navigate('/');
     }
   }, [navigate]);
 

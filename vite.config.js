@@ -8,7 +8,7 @@ export default defineConfig({
     react(),
     VitePWA({
       registerType: 'autoUpdate',
-      includeAssets: ['favicon-new.png', 'icons.svg'], // files to cache
+      includeAssets: ['logo.svg', 'favicon-new.png', 'icons.svg'], // files to cache
       manifest: {
         name: 'S&S Kids Furniture',
         short_name: 'S&S Kids',
@@ -18,9 +18,9 @@ export default defineConfig({
         display: 'standalone',
         icons: [
           {
-            src: 'favicon-new.png',
+            src: 'logo.svg',
             sizes: '192x192 512x512',
-            type: 'image/png',
+            type: 'image/svg+xml',
             purpose: 'any maskable'
           }
         ]

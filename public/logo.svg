@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 50" fill="none">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400&amp;family=Outfit:wght@600;800&amp;display=swap');
+    text {
+      fill: #14b8a6; /* Tailwind teal-500 for primary color */
+    }
+    circle {
+      fill: #14b8a6;
+    }
+  </style>
+  <text 
+    x="0" y="40" 
+    font-family="'Outfit', sans-serif" 
+    font-size="46" 
+    font-weight="800" 
+    letter-spacing="-1"
+  >
+    S
+  </text>
+  
+  <circle cx="32" cy="37" r="5" opacity="0.85" />
+  
+  <text 
+    x="48" y="30" 
+    font-family="'Outfit', sans-serif" 
+    font-size="22" 
+    font-weight="600" 
+    opacity="0.9"
+  >
+    Kids
+  </text>
+  
+  <text 
+    x="48" y="46" 
+    font-family="'Inter', sans-serif" 
+    font-size="13" 
+    font-weight="400" 
+    opacity="0.55"
+    letter-spacing="3.5"
+  >
+    FURNITURE
+  </text>
+</svg>
