@@ -52,7 +52,7 @@ function InstallPrompt() {
       <div className="flex items-start justify-between gap-4">
         <div className="flex items-center gap-3">
           <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center shrink-0">
-            <img src="/favicon.svg" alt="App Icon" className="w-8 h-8" />
+            <img src="/pwa-icon-512.png" alt="App Icon" className="w-10 h-10 object-contain" />
           </div>
           <div>
             <h3 className="font-bold text-text">Install S&S Kids</h3>

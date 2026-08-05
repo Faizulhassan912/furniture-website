@@ -63,7 +63,7 @@ function AdminLogin() {
       
       if (res.ok) {
         localStorage.setItem('adminToken', data.token);
-        navigate('/admin/dashboard');
+        navigate('/portal/dashboard');
       } else {
         const newAttempts = attempts + 1;
         setAttempts(newAttempts);

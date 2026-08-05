@@ -38,7 +38,7 @@ const PageLoader = () => (
 
 function App() {
   const location = useLocation();
-  const isAdminRoute = location.pathname.startsWith('/admin');
+  const isAdminRoute = location.pathname.startsWith('/portal');
 
   return (
     <SettingsProvider>
@@ -47,8 +47,8 @@ function App() {
       <AnimatePresence mode="wait">
         <Routes location={location} key={location.pathname}>
           {/* Admin Routes (No Header/Footer) */}
-          <Route path="/admin" element={<AdminLogin />} />
-          <Route path="/admin/dashboard" element={<AdminDashboard />} />
+          <Route path="/portal" element={<AdminLogin />} />
+          <Route path="/portal/dashboard" element={<AdminDashboard />} />
 
           {/* Public Routes with Header/Footer */}
           <Route element={<Layout />}>

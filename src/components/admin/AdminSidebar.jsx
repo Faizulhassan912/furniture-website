@@ -127,7 +127,7 @@ function AdminSidebar({ activeTab, setActiveTab, isOpen, onClose }) {
                 <button
                   onClick={() => {
                     localStorage.removeItem('adminToken');
-                    window.location.href = '/admin'; // Force full reload to clear states
+                    window.location.href = '/'; // Redirect to customer panel on logout
                   }}
                   className="px-4 py-2 bg-red-600 hover:bg-red-700 text-white font-bold rounded-lg transition-colors cursor-pointer"
                 >
