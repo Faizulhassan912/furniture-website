@@ -23,6 +23,20 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+// Database connection middleware for Serverless & Express
+app.use(async (req, res, next) => {
+  if (mongoose.connection.readyState === 0) {
+    try {
+      await mongoose.connect(process.env.MONGO_URI);
+      console.log("Connected to MongoDB Atlas successfully!");
+    } catch (err) {
+      console.error("Database connection error:", err.message);
+      return res.status(500).json({ message: "Database connection failed", error: err.message });
+    }
+  }
+  next();
+});
+
 import authRoutes from './_routes/authRoutes.js';
 import productRoutes from './_routes/productRoutes.js';
 import messageRoutes from './_routes/messageRoutes.js';
@@ -57,12 +71,7 @@ app.use((err, req, res, next) => {
   res.status(500).json({ message: err.message || 'Internal Server Error' });
 });
 
-// 4. Connect to MongoDB Database
-if (mongoose.connection.readyState === 0) {
-  mongoose.connect(process.env.MONGO_URI)
-    .then(() => console.log("Connected to MongoDB Atlas successfully!"))
-    .catch((err) => console.error("Database connection failed:", err));
-}
+
 
 // Only listen on port if NOT running on Vercel (Vercel manages HTTP serverless invocations)
 if (!process.env.VERCEL) {
