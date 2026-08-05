@@ -11,6 +11,14 @@ const userSchema = new mongoose.Schema({
   password: {
     type: String,
     required: true,
+  },
+  role: {
+    type: String,
+    default: 'admin',
+  },
+  gatekeeperPasscode: {
+    type: String,
+    default: 'admin2026',
   }
 }, {
   timestamps: true,

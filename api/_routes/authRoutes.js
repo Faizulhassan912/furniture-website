@@ -80,4 +80,75 @@ router.post('/setup', async (req, res) => {
 });
 */
 
+// @desc    Update admin username
+// @route   PUT /api/auth/update-username
+// @access  Private/Admin
+router.put('/update-username', protect, admin, async (req, res) => {
+  const { currentPassword, newUsername } = req.body;
+
+  try {
+    const user = await User.findById(req.user._id);
+
+    if (user && (await user.matchPassword(currentPassword))) {
+      // Check if username is already taken
+      const existing = await User.findOne({ username: newUsername });
+      if (existing && existing._id.toString() !== user._id.toString()) {
+        return res.status(400).json({ message: 'Username already taken' });
+      }
+      user.username = newUsername;
+      await user.save();
+      res.json({ message: 'Username updated successfully' });
+    } else {
+      res.status(401).json({ message: 'Invalid current password' });
+    }
+  } catch (error) {
+    res.status(500).json({ message: 'Server Error', error: error.message });
+  }
+});
+
+// @desc    Update gatekeeper passcode
+// @route   PUT /api/auth/update-gatekeeper
+// @access  Private/Admin
+router.put('/update-gatekeeper', protect, admin, async (req, res) => {
+  const { currentPassword, newPasscode } = req.body;
+
+  try {
+    const user = await User.findById(req.user._id);
+
+    if (user && (await user.matchPassword(currentPassword))) {
+      user.gatekeeperPasscode = newPasscode;
+      await user.save();
+      res.json({ message: 'Gatekeeper passcode updated successfully' });
+    } else {
+      res.status(401).json({ message: 'Invalid current password' });
+    }
+  } catch (error) {
+    res.status(500).json({ message: 'Server Error', error: error.message });
+  }
+});
+
+// @desc    Verify gatekeeper passcode
+// @route   POST /api/auth/verify-gatekeeper
+// @access  Public
+router.post('/verify-gatekeeper', async (req, res) => {
+  const { passcode } = req.body;
+
+  try {
+    const user = await User.findOne({ role: 'admin' });
+    if (!user) {
+      return res.status(404).json({ message: 'No admin found' });
+    }
+    
+    const storedPasscode = user.gatekeeperPasscode || 'admin2026';
+    
+    if (passcode === storedPasscode) {
+      res.json({ success: true });
+    } else {
+      res.status(401).json({ success: false, message: 'Invalid passcode' });
+    }
+  } catch (error) {
+    res.status(500).json({ message: 'Server Error', error: error.message });
+  }
+});
+
 export default router;

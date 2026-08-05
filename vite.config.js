@@ -8,20 +8,26 @@ export default defineConfig({
     react(),
     VitePWA({
       registerType: 'autoUpdate',
-      includeAssets: ['logo.svg', 'favicon-new.png', 'icons.svg'], // files to cache
+      includeAssets: ['pwa-icon-512.png', 'logo.svg', 'favicon-new.png', 'icons.svg'],
       manifest: {
         name: 'S&S Kids Furniture',
         short_name: 'S&S Kids',
         description: 'Premium Kids Furniture Store',
-        theme_color: '#f5f5f5',
-        background_color: '#f5f5f5',
+        theme_color: '#1e293b',
+        background_color: '#1e293b',
         display: 'standalone',
         icons: [
           {
-            src: 'logo.svg',
-            sizes: '192x192 512x512',
-            type: 'image/svg+xml',
-            purpose: 'any maskable'
+            src: 'pwa-icon-512.png',
+            sizes: '512x512',
+            type: 'image/png',
+            purpose: 'any'
+          },
+          {
+            src: 'pwa-icon-512.png',
+            sizes: '192x192',
+            type: 'image/png',
+            purpose: 'maskable'
           }
         ]
       },

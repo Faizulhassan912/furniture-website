@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { CheckCircle, Image as ImageIcon, Shield } from 'lucide-react';
+import { CheckCircle, Image as ImageIcon, Shield, Eye, EyeOff, User, KeyRound } from 'lucide-react';
 
 function SettingsTab() {
   const [showToast, setShowToast] = useState(false);
@@ -8,6 +8,18 @@ function SettingsTab() {
   const [isError, setIsError] = useState(false);
   const [logo, setLogo] = useState(null);
   const [passwords, setPasswords] = useState({ current: '', new: '' });
+  const [showCurrentPw, setShowCurrentPw] = useState(false);
+  const [showNewPw, setShowNewPw] = useState(false);
+  
+  // Username change state
+  const [usernameData, setUsernameData] = useState({ password: '', newUsername: '' });
+  const [showUsernamePw, setShowUsernamePw] = useState(false);
+  
+  // Gatekeeper change state
+  const [gatekeeperData, setGatekeeperData] = useState({ password: '', newPasscode: '' });
+  const [showGatekeeperPw, setShowGatekeeperPw] = useState(false);
+  const [showGatekeeperPasscode, setShowGatekeeperPasscode] = useState(false);
+  
   const [settings, setSettings] = useState({
     siteName: 'S&S Kids Furniture',
     primaryColor: '#e4658a',
@@ -60,6 +72,13 @@ function SettingsTab() {
     return null;
   };
 
+  const showNotification = (message, error = false) => {
+    setToastMessage(message);
+    setIsError(error);
+    setShowToast(true);
+    setTimeout(() => setShowToast(false), 3000);
+  };
+
   const handleSave = async () => {
     try {
       const token = localStorage.getItem('adminToken');
@@ -73,10 +92,7 @@ function SettingsTab() {
         body: JSON.stringify({ data: payload })
       });
       if (res.ok) {
-        setToastMessage('Settings saved successfully!');
-        setIsError(false);
-        setShowToast(true);
-        setTimeout(() => setShowToast(false), 3000);
+        showNotification('Settings saved successfully!');
       }
     } catch (error) {
       console.error('Error saving settings:', error);
@@ -85,10 +101,7 @@ function SettingsTab() {
 
   const handleUpdatePassword = async () => {
     if (!passwords.current || !passwords.new) {
-      setToastMessage('Please enter both passwords.');
-      setIsError(true);
-      setShowToast(true);
-      setTimeout(() => setShowToast(false), 3000);
+      showNotification('Please enter both passwords.', true);
       return;
     }
 
@@ -108,21 +121,77 @@ function SettingsTab() {
 
       const data = await res.json();
       if (res.ok) {
-        setToastMessage('Password updated successfully!');
-        setIsError(false);
+        showNotification('Password updated successfully!');
         setPasswords({ current: '', new: '' });
       } else {
-        setToastMessage(data.message || 'Error updating password');
-        setIsError(true);
+        showNotification(data.message || 'Error updating password', true);
       }
-      setShowToast(true);
-      setTimeout(() => setShowToast(false), 3000);
     } catch (error) {
-      console.error('Error updating password:', error);
-      setToastMessage('Server error');
-      setIsError(true);
-      setShowToast(true);
-      setTimeout(() => setShowToast(false), 3000);
+      showNotification('Server error', true);
+    }
+  };
+
+  const handleUpdateUsername = async () => {
+    if (!usernameData.password || !usernameData.newUsername) {
+      showNotification('Please enter password and new username.', true);
+      return;
+    }
+
+    try {
+      const token = localStorage.getItem('adminToken');
+      const res = await fetch('/api/auth/update-username', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({
+          currentPassword: usernameData.password,
+          newUsername: usernameData.newUsername
+        })
+      });
+
+      const data = await res.json();
+      if (res.ok) {
+        showNotification('Username updated successfully!');
+        setUsernameData({ password: '', newUsername: '' });
+      } else {
+        showNotification(data.message || 'Error updating username', true);
+      }
+    } catch (error) {
+      showNotification('Server error', true);
+    }
+  };
+
+  const handleUpdateGatekeeper = async () => {
+    if (!gatekeeperData.password || !gatekeeperData.newPasscode) {
+      showNotification('Please enter password and new passcode.', true);
+      return;
+    }
+
+    try {
+      const token = localStorage.getItem('adminToken');
+      const res = await fetch('/api/auth/update-gatekeeper', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({
+          currentPassword: gatekeeperData.password,
+          newPasscode: gatekeeperData.newPasscode
+        })
+      });
+
+      const data = await res.json();
+      if (res.ok) {
+        showNotification('Gatekeeper passcode updated successfully!');
+        setGatekeeperData({ password: '', newPasscode: '' });
+      } else {
+        showNotification(data.message || 'Error updating passcode', true);
+      }
+    } catch (error) {
+      showNotification('Server error', true);
     }
   };
 
@@ -277,37 +346,141 @@ function SettingsTab() {
               <h3 className="text-lg font-bold text-text">Account Security</h3>
             </div>
             
-            <div className="bg-bg-alt p-6 rounded-2xl border border-border max-w-xl">
-              <div className="space-y-4">
-                <div>
-                  <label className="block text-sm font-bold text-text mb-1">Current Password</label>
-                  <input 
-                    type="password" 
-                    value={passwords.current} 
-                    onChange={e => setPasswords({...passwords, current: e.target.value})} 
-                    className="w-full px-4 py-2 rounded-xl bg-bg-card border border-border outline-none focus:border-red-500 transition-colors" 
-                    placeholder="Enter current password"
-                  />
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+              
+              {/* Update Password */}
+              <div className="bg-bg-alt p-6 rounded-2xl border border-border">
+                <div className="flex items-center gap-2 mb-4">
+                  <Shield size={18} className="text-red-500" />
+                  <h4 className="text-sm font-bold text-text">Change Password</h4>
                 </div>
-                <div>
-                  <label className="block text-sm font-bold text-text mb-1">New Password</label>
-                  <input 
-                    type="password" 
-                    value={passwords.new} 
-                    onChange={e => setPasswords({...passwords, new: e.target.value})} 
-                    className="w-full px-4 py-2 rounded-xl bg-bg-card border border-border outline-none focus:border-red-500 transition-colors" 
-                    placeholder="Enter new password"
-                  />
-                </div>
-                <div className="pt-2">
+                <div className="space-y-4">
+                  <div>
+                    <label className="block text-xs font-bold text-text-light mb-1">Current Password</label>
+                    <div className="relative">
+                      <input 
+                        type={showCurrentPw ? 'text' : 'password'}
+                        value={passwords.current} 
+                        onChange={e => setPasswords({...passwords, current: e.target.value})} 
+                        className="w-full px-4 py-2 pr-10 rounded-xl bg-bg-card border border-border outline-none focus:border-red-500 transition-colors" 
+                        placeholder="Enter current password"
+                      />
+                      <button type="button" onClick={() => setShowCurrentPw(!showCurrentPw)} className="absolute right-3 top-1/2 -translate-y-1/2 text-text-light hover:text-primary transition-colors cursor-pointer">
+                        {showCurrentPw ? <EyeOff size={16} /> : <Eye size={16} />}
+                      </button>
+                    </div>
+                  </div>
+                  <div>
+                    <label className="block text-xs font-bold text-text-light mb-1">New Password</label>
+                    <div className="relative">
+                      <input 
+                        type={showNewPw ? 'text' : 'password'}
+                        value={passwords.new} 
+                        onChange={e => setPasswords({...passwords, new: e.target.value})} 
+                        className="w-full px-4 py-2 pr-10 rounded-xl bg-bg-card border border-border outline-none focus:border-red-500 transition-colors" 
+                        placeholder="Enter new password"
+                      />
+                      <button type="button" onClick={() => setShowNewPw(!showNewPw)} className="absolute right-3 top-1/2 -translate-y-1/2 text-text-light hover:text-primary transition-colors cursor-pointer">
+                        {showNewPw ? <EyeOff size={16} /> : <Eye size={16} />}
+                      </button>
+                    </div>
+                  </div>
                   <button 
                     onClick={handleUpdatePassword} 
-                    className="px-6 py-2 bg-red-600 text-white font-bold rounded-xl hover:bg-red-700 transition-colors cursor-pointer shadow-sm w-full sm:w-auto"
+                    className="px-5 py-2 bg-red-600 text-white font-bold rounded-xl hover:bg-red-700 transition-colors cursor-pointer shadow-sm w-full text-sm"
                   >
                     Update Password
                   </button>
                 </div>
               </div>
+
+              {/* Update Username */}
+              <div className="bg-bg-alt p-6 rounded-2xl border border-border">
+                <div className="flex items-center gap-2 mb-4">
+                  <User size={18} className="text-blue-500" />
+                  <h4 className="text-sm font-bold text-text">Change Username</h4>
+                </div>
+                <div className="space-y-4">
+                  <div>
+                    <label className="block text-xs font-bold text-text-light mb-1">Current Password</label>
+                    <div className="relative">
+                      <input 
+                        type={showUsernamePw ? 'text' : 'password'}
+                        value={usernameData.password} 
+                        onChange={e => setUsernameData({...usernameData, password: e.target.value})} 
+                        className="w-full px-4 py-2 pr-10 rounded-xl bg-bg-card border border-border outline-none focus:border-blue-500 transition-colors" 
+                        placeholder="Enter current password"
+                      />
+                      <button type="button" onClick={() => setShowUsernamePw(!showUsernamePw)} className="absolute right-3 top-1/2 -translate-y-1/2 text-text-light hover:text-primary transition-colors cursor-pointer">
+                        {showUsernamePw ? <EyeOff size={16} /> : <Eye size={16} />}
+                      </button>
+                    </div>
+                  </div>
+                  <div>
+                    <label className="block text-xs font-bold text-text-light mb-1">New Username</label>
+                    <input 
+                      type="text"
+                      value={usernameData.newUsername} 
+                      onChange={e => setUsernameData({...usernameData, newUsername: e.target.value})} 
+                      className="w-full px-4 py-2 rounded-xl bg-bg-card border border-border outline-none focus:border-blue-500 transition-colors" 
+                      placeholder="Enter new username"
+                    />
+                  </div>
+                  <button 
+                    onClick={handleUpdateUsername} 
+                    className="px-5 py-2 bg-blue-600 text-white font-bold rounded-xl hover:bg-blue-700 transition-colors cursor-pointer shadow-sm w-full text-sm"
+                  >
+                    Update Username
+                  </button>
+                </div>
+              </div>
+
+              {/* Update Gatekeeper Passcode */}
+              <div className="bg-bg-alt p-6 rounded-2xl border border-border">
+                <div className="flex items-center gap-2 mb-4">
+                  <KeyRound size={18} className="text-amber-500" />
+                  <h4 className="text-sm font-bold text-text">Gatekeeper Passcode</h4>
+                </div>
+                <div className="space-y-4">
+                  <div>
+                    <label className="block text-xs font-bold text-text-light mb-1">Current Password</label>
+                    <div className="relative">
+                      <input 
+                        type={showGatekeeperPw ? 'text' : 'password'}
+                        value={gatekeeperData.password} 
+                        onChange={e => setGatekeeperData({...gatekeeperData, password: e.target.value})} 
+                        className="w-full px-4 py-2 pr-10 rounded-xl bg-bg-card border border-border outline-none focus:border-amber-500 transition-colors" 
+                        placeholder="Enter current password"
+                      />
+                      <button type="button" onClick={() => setShowGatekeeperPw(!showGatekeeperPw)} className="absolute right-3 top-1/2 -translate-y-1/2 text-text-light hover:text-primary transition-colors cursor-pointer">
+                        {showGatekeeperPw ? <EyeOff size={16} /> : <Eye size={16} />}
+                      </button>
+                    </div>
+                  </div>
+                  <div>
+                    <label className="block text-xs font-bold text-text-light mb-1">New Passcode</label>
+                    <div className="relative">
+                      <input 
+                        type={showGatekeeperPasscode ? 'text' : 'password'}
+                        value={gatekeeperData.newPasscode} 
+                        onChange={e => setGatekeeperData({...gatekeeperData, newPasscode: e.target.value})} 
+                        className="w-full px-4 py-2 pr-10 rounded-xl bg-bg-card border border-border outline-none focus:border-amber-500 transition-colors" 
+                        placeholder="Enter new passcode"
+                      />
+                      <button type="button" onClick={() => setShowGatekeeperPasscode(!showGatekeeperPasscode)} className="absolute right-3 top-1/2 -translate-y-1/2 text-text-light hover:text-primary transition-colors cursor-pointer">
+                        {showGatekeeperPasscode ? <EyeOff size={16} /> : <Eye size={16} />}
+                      </button>
+                    </div>
+                  </div>
+                  <button 
+                    onClick={handleUpdateGatekeeper} 
+                    className="px-5 py-2 bg-amber-600 text-white font-bold rounded-xl hover:bg-amber-700 transition-colors cursor-pointer shadow-sm w-full text-sm"
+                  >
+                    Update Passcode
+                  </button>
+                </div>
+              </div>
+
             </div>
           </div>
 
@@ -318,3 +491,4 @@ function SettingsTab() {
 }
 
 export default SettingsTab;
+
