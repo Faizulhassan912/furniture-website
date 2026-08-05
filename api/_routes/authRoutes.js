@@ -134,7 +134,14 @@ router.post('/verify-gatekeeper', async (req, res) => {
   const { passcode } = req.body;
 
   try {
-    const user = await User.findOne({ role: 'admin' });
+    // Check for user with role admin, or fallback to any user (since it's a single admin setup)
+    let user = await User.findOne({ role: 'admin' });
+    
+    // Fallback for existing database where role might not be set yet
+    if (!user) {
+      user = await User.findOne(); // Just get the first user
+    }
+
     if (!user) {
       return res.status(404).json({ message: 'No admin found' });
     }
