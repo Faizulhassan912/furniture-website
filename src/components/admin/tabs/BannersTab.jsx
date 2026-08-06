@@ -12,7 +12,7 @@ function BannersTab() {
     title: 'Premium Storage Collection',
     subtitle: 'Organize in style with our new arrivals',
     buttonText: 'Shop Now',
-    buttonLink: '/collection/storage',
+    buttonLink: '/collection/velvet-kingdom-bunk-bed',
     layout: 'text-left',
     bgImage: null
   });

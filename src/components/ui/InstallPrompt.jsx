@@ -51,8 +51,8 @@ function InstallPrompt() {
     <div className="fixed bottom-4 left-4 right-4 md:left-auto md:right-8 md:w-96 bg-bg-card border border-border shadow-2xl rounded-2xl p-4 z-[9999] animate-[fadeInUp_0.3s_ease-out]">
       <div className="flex items-start justify-between gap-4">
         <div className="flex items-center gap-3">
-          <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center shrink-0">
-            <img src="/pwa-icon-512.png" alt="App Icon" className="w-10 h-10 object-contain" />
+          <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center shrink-0 overflow-hidden">
+            <img src="/favicon-round.png" alt="App Icon" className="w-full h-full object-cover" />
           </div>
           <div>
             <h3 className="font-bold text-text">Install S&S Kids</h3>

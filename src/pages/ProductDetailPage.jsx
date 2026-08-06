@@ -74,6 +74,7 @@ function ProductDetailPage() {
   const [showReviewForm, setShowReviewForm] = useState(false);
   const [newReview, setNewReview] = useState({ name: '', rating: 5, title: '', text: '' });
   const [isLightboxOpen, setIsLightboxOpen] = useState(false);
+  const [zoomedImage, setZoomedImage] = useState(null);
 
   const handleShare = async () => {
     try {

@@ -46,7 +46,7 @@ const HeroSection = ({ data }) => {
         {heroImages.map((img, index) => (
           <div key={img} className={`absolute inset-0 transition-opacity duration-1000 ${index === currentHeroImage ? 'opacity-100' : 'opacity-0'}`}>
             <OptimizedImage src={img} alt="Background" className="w-full h-full object-cover" width={1200} loading="eager" />
-            <div className="absolute inset-0 bg-[#0f172a]/75 dark:bg-bg/85 backdrop-blur-[2px]" />
+            <div className="absolute inset-0 bg-white/70 dark:bg-bg/85 backdrop-blur-[2px]" />
           </div>
         ))}
       </div>
@@ -57,12 +57,12 @@ const HeroSection = ({ data }) => {
           <span className="inline-block px-4 py-1.5 bg-primary/20 text-primary-light md:text-primary md:bg-primary/10 border border-primary/30 md:border-primary/20 text-xs sm:text-sm font-semibold rounded-full mb-6 backdrop-blur-md shadow-sm">
             ✨ Custom-Made for Your Little One
           </span>
-          <h1 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-extrabold text-white md:text-text leading-tight font-heading max-w-4xl mx-auto md:mx-0 drop-shadow-lg md:drop-shadow-none">
+          <h1 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-extrabold text-text dark:text-white md:text-text leading-tight font-heading max-w-4xl mx-auto md:mx-0 drop-shadow-lg md:drop-shadow-none">
             {data?.heroTitle || (
               <>Magical Furniture for <span className="text-primary-light md:text-primary">Little Dreamers</span></>
             )}
           </h1>
-          <p className="mt-6 sm:mt-8 text-base sm:text-lg lg:text-xl text-gray-200 md:text-text-light max-w-2xl mx-auto md:mx-0 drop-shadow-md md:drop-shadow-none">
+          <p className="mt-6 sm:mt-8 text-base sm:text-lg lg:text-xl text-text dark:text-gray-200 md:text-text-light max-w-2xl mx-auto md:mx-0 drop-shadow-md md:drop-shadow-none">
             {data?.heroSubtitle || "Custom-crafted, safe, and beautifully designed furniture for your child's perfect room."}
           </p>
           <div className="mt-8 sm:mt-10 flex flex-row gap-2 sm:gap-4 w-full sm:w-auto justify-center md:justify-start items-center">

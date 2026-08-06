@@ -7,7 +7,7 @@ function PromoBanner({ bannersData }) {
     title: 'Premium Storage Collection',
     subtitle: 'Keep the playroom perfectly organized with our new range of spacious, safe, and beautifully designed wardrobes and toy chests.',
     buttonText: 'Explore Wardrobe',
-    buttonLink: '/collection/storage',
+    buttonLink: '/collection/velvet-kingdom-bunk-bed',
     layout: 'text-left',
     bgImage: null
   };
