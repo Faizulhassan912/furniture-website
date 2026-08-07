@@ -206,7 +206,22 @@ function BannersTab() {
                       <label className="block text-sm font-bold text-text mb-1">Button Link (Select Product)</label>
                       <select 
                         value={customBanner.buttonLink} 
-                        onChange={e => setCustomBanner({...customBanner, buttonLink: e.target.value})} 
+                        onChange={e => {
+                          const val = e.target.value;
+                          const newBanner = {...customBanner, buttonLink: val};
+                          
+                          if (val.startsWith('/collection/')) {
+                            const selectedProduct = products.find(p => `/collection/${p.slug}` === val);
+                            if (selectedProduct) {
+                              newBanner.buttonText = `View ${selectedProduct.name}`;
+                            }
+                          } else if (val === '/collection') {
+                            newBanner.buttonText = 'Shop Collection';
+                          }
+                          
+                          setCustomBanner(newBanner);
+                        }} 
+
                         className="w-full px-4 py-2 rounded-xl bg-bg-alt border border-border outline-none focus:border-primary transition-colors"
                       >
                         <option value="/collection">All Collection (/collection)</option>

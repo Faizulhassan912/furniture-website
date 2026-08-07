@@ -20,6 +20,12 @@ function SettingsTab() {
   const [showGatekeeperPw, setShowGatekeeperPw] = useState(false);
   const [showGatekeeperPasscode, setShowGatekeeperPasscode] = useState(false);
   
+  // Loading states
+  const [isUpdatingPassword, setIsUpdatingPassword] = useState(false);
+  const [isUpdatingUsername, setIsUpdatingUsername] = useState(false);
+  const [isUpdatingGatekeeper, setIsUpdatingGatekeeper] = useState(false);
+  
+
   const [settings, setSettings] = useState({
     siteName: 'S&S Kids Furniture',
     primaryColor: '#e4658a',
@@ -105,6 +111,7 @@ function SettingsTab() {
       return;
     }
 
+    setIsUpdatingPassword(true);
     try {
       const token = localStorage.getItem('adminToken');
       const res = await fetch('/api/auth/update-password', {
@@ -128,6 +135,8 @@ function SettingsTab() {
       }
     } catch (error) {
       showNotification('Server error', true);
+    } finally {
+      setIsUpdatingPassword(false);
     }
   };
 
@@ -137,6 +146,7 @@ function SettingsTab() {
       return;
     }
 
+    setIsUpdatingUsername(true);
     try {
       const token = localStorage.getItem('adminToken');
       const res = await fetch('/api/auth/update-username', {
@@ -160,6 +170,8 @@ function SettingsTab() {
       }
     } catch (error) {
       showNotification('Server error', true);
+    } finally {
+      setIsUpdatingUsername(false);
     }
   };
 
@@ -169,6 +181,7 @@ function SettingsTab() {
       return;
     }
 
+    setIsUpdatingGatekeeper(true);
     try {
       const token = localStorage.getItem('adminToken');
       const res = await fetch('/api/auth/update-gatekeeper', {
@@ -192,6 +205,8 @@ function SettingsTab() {
       }
     } catch (error) {
       showNotification('Server error', true);
+    } finally {
+      setIsUpdatingGatekeeper(false);
     }
   };
 
@@ -386,10 +401,16 @@ function SettingsTab() {
                     </div>
                   </div>
                   <button 
-                    onClick={handleUpdatePassword} 
-                    className="px-5 py-2 bg-red-600 text-white font-bold rounded-xl hover:bg-red-700 transition-colors cursor-pointer shadow-sm w-full text-sm"
+                    onClick={handleUpdatePassword}
+                    disabled={isUpdatingPassword} 
+                    className={`px-5 py-2 bg-red-600 text-white font-bold rounded-xl transition-colors shadow-sm w-full text-sm flex items-center justify-center gap-2 ${isUpdatingPassword ? 'opacity-70 cursor-wait' : 'hover:bg-red-700 cursor-pointer'}`}
                   >
-                    Update Password
+                    {isUpdatingPassword ? (
+                      <>
+                        <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                        Updating...
+                      </>
+                    ) : 'Update Password'}
                   </button>
                 </div>
               </div>
@@ -427,10 +448,16 @@ function SettingsTab() {
                     />
                   </div>
                   <button 
-                    onClick={handleUpdateUsername} 
-                    className="px-5 py-2 bg-blue-600 text-white font-bold rounded-xl hover:bg-blue-700 transition-colors cursor-pointer shadow-sm w-full text-sm"
+                    onClick={handleUpdateUsername}
+                    disabled={isUpdatingUsername} 
+                    className={`px-5 py-2 bg-blue-600 text-white font-bold rounded-xl transition-colors shadow-sm w-full text-sm flex items-center justify-center gap-2 ${isUpdatingUsername ? 'opacity-70 cursor-wait' : 'hover:bg-blue-700 cursor-pointer'}`}
                   >
-                    Update Username
+                    {isUpdatingUsername ? (
+                      <>
+                        <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                        Updating...
+                      </>
+                    ) : 'Update Username'}
                   </button>
                 </div>
               </div>
@@ -473,10 +500,16 @@ function SettingsTab() {
                     </div>
                   </div>
                   <button 
-                    onClick={handleUpdateGatekeeper} 
-                    className="px-5 py-2 bg-amber-600 text-white font-bold rounded-xl hover:bg-amber-700 transition-colors cursor-pointer shadow-sm w-full text-sm"
+                    onClick={handleUpdateGatekeeper}
+                    disabled={isUpdatingGatekeeper} 
+                    className={`px-5 py-2 bg-amber-600 text-white font-bold rounded-xl transition-colors shadow-sm w-full text-sm flex items-center justify-center gap-2 ${isUpdatingGatekeeper ? 'opacity-70 cursor-wait' : 'hover:bg-amber-700 cursor-pointer'}`}
                   >
-                    Update Passcode
+                    {isUpdatingGatekeeper ? (
+                      <>
+                        <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                        Updating...
+                      </>
+                    ) : 'Update Passcode'}
                   </button>
                 </div>
               </div>
