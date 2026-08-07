@@ -214,8 +214,13 @@ function BannersTab() {
                             const selectedProduct = products.find(p => `/collection/${p.slug}` === val);
                             if (selectedProduct) {
                               newBanner.buttonText = `View ${selectedProduct.name}`;
-                              if (selectedProduct.images && selectedProduct.images.length > 0) {
-                                newBanner.bgImage = selectedProduct.images[0];
+                              
+                              const prodImage = (selectedProduct.images && selectedProduct.images.length > 0) 
+                                ? selectedProduct.images[0] 
+                                : selectedProduct.image;
+                                
+                              if (prodImage) {
+                                newBanner.bgImage = prodImage;
                               }
                             }
                           } else if (val === '/collection') {
