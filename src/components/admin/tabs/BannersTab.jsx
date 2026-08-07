@@ -7,6 +7,7 @@ function BannersTab() {
   const [activeBuilder, setActiveBuilder] = useState('pre-designed'); // 'pre-designed' or 'custom'
   const [promoText, setPromoText] = useState('Summer Sale: Get 20% off all Bunk Beds! Use code SUMMER20');
   const [previewImage, setPreviewImage] = useState(null);
+  const [products, setProducts] = useState([]);
   
   const [customBanner, setCustomBanner] = useState({
     title: 'Premium Storage Collection',
@@ -19,7 +20,21 @@ function BannersTab() {
 
   useEffect(() => {
     fetchBannersData();
+    fetchProducts();
   }, []);
+
+  const fetchProducts = async () => {
+    try {
+      const res = await fetch('/api/products');
+      if (res.ok) {
+        const data = await res.json();
+        // The API returns either an array (if no pagination) or an object with a 'products' array
+        setProducts(Array.isArray(data) ? data : data.products || []);
+      }
+    } catch (error) {
+      console.error('Error fetching products:', error);
+    }
+  };
 
   const fetchBannersData = async () => {
     try {
@@ -182,8 +197,19 @@ function BannersTab() {
                       <input type="text" value={customBanner.buttonText} onChange={e => setCustomBanner({...customBanner, buttonText: e.target.value})} className="w-full px-4 py-2 rounded-xl bg-bg-alt border border-border outline-none focus:border-primary transition-colors" />
                     </div>
                     <div>
-                      <label className="block text-sm font-bold text-text mb-1">Button Link</label>
-                      <input type="text" value={customBanner.buttonLink} onChange={e => setCustomBanner({...customBanner, buttonLink: e.target.value})} className="w-full px-4 py-2 rounded-xl bg-bg-alt border border-border outline-none focus:border-primary transition-colors" />
+                      <label className="block text-sm font-bold text-text mb-1">Button Link (Select Product)</label>
+                      <select 
+                        value={customBanner.buttonLink} 
+                        onChange={e => setCustomBanner({...customBanner, buttonLink: e.target.value})} 
+                        className="w-full px-4 py-2 rounded-xl bg-bg-alt border border-border outline-none focus:border-primary transition-colors"
+                      >
+                        <option value="/collection">All Collection (/collection)</option>
+                        {products.map(product => (
+                          <option key={product._id} value={`/collection/${product.slug}`}>
+                            {product.name}
+                          </option>
+                        ))}
+                      </select>
                     </div>
                   </div>
                   <div>
