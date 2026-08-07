@@ -101,8 +101,14 @@ function BannersTab() {
   const handleCustomBgChange = async (e) => {
     const file = e.target.files[0];
     if (file) {
+      // Show immediate local preview
+      const tempUrl = URL.createObjectURL(file);
+      setCustomBanner(prev => ({ ...prev, bgImage: tempUrl }));
+      
       const url = await uploadImage(file);
-      if (url) setCustomBanner({ ...customBanner, bgImage: url });
+      if (url) {
+        setCustomBanner(prev => ({ ...prev, bgImage: url }));
+      }
     }
   };
 
@@ -229,21 +235,32 @@ function BannersTab() {
                 {/* Live Preview */}
                 <div>
                   <label className="block text-sm font-bold text-text mb-2 uppercase tracking-wider text-primary">Live Preview</label>
-                  <div className={`w-full aspect-[2/1] rounded-2xl overflow-hidden shadow-sm relative flex ${customBanner.layout === 'text-right' ? 'flex-row-reverse' : customBanner.layout === 'text-center' ? 'flex-col items-center justify-center text-center' : 'flex-row'} items-center p-6 ${customBanner.bgImage ? '' : 'bg-gray-100 border border-border'}`}>
-                    {customBanner.bgImage && (
-                      <div className="absolute inset-0">
-                        <img src={customBanner.bgImage} className="w-full h-full object-cover" alt="bg" />
-                        <div className="absolute inset-0 bg-black/30 backdrop-blur-[2px]"></div>
-                      </div>
-                    )}
+                  <div className={`w-full aspect-[2/1] rounded-2xl overflow-hidden shadow-sm relative flex ${customBanner.layout === 'text-right' ? 'flex-row-reverse' : customBanner.layout === 'text-center' ? 'flex-col' : 'flex-row'} bg-pink text-white`}>
                     
-                    <div className={`relative z-10 w-full ${customBanner.layout === 'text-center' ? 'max-w-md' : 'max-w-[50%]'}`}>
-                      <h2 className={`font-bold font-heading mb-2 ${customBanner.bgImage ? 'text-white text-3xl drop-shadow-md' : 'text-text text-2xl'}`}>{customBanner.title}</h2>
-                      <p className={`text-sm mb-4 ${customBanner.bgImage ? 'text-white/90 drop-shadow' : 'text-text-light'}`}>{customBanner.subtitle}</p>
+                    <div className={`p-6 relative z-10 flex flex-col justify-center ${customBanner.layout === 'text-center' ? 'w-full text-center items-center' : 'w-1/2'}`}>
+                      <div className="mb-2">
+                        <span className="inline-block px-2 py-1 bg-black/10 text-xs font-bold rounded-full uppercase tracking-wider">✨ New Arrival</span>
+                      </div>
+                      <h2 className="font-bold font-heading mb-2 text-2xl drop-shadow-sm leading-tight">{customBanner.title}</h2>
+                      <p className="text-xs mb-4 opacity-90 drop-shadow-sm">{customBanner.subtitle}</p>
                       {customBanner.buttonText && (
-                        <button className="bg-primary text-white px-6 py-2 rounded-full font-bold text-sm shadow-md">{customBanner.buttonText}</button>
+                        <div>
+                          <span className="bg-white text-pink px-4 py-1.5 rounded-xl font-bold text-xs shadow-md inline-block">{customBanner.buttonText}</span>
+                        </div>
                       )}
                     </div>
+
+                    {customBanner.layout !== 'text-center' && (
+                      <div className="w-1/2 relative flex items-center justify-center p-2">
+                        {customBanner.bgImage ? (
+                          <img src={customBanner.bgImage} className="w-full h-full object-contain" alt="preview" />
+                        ) : (
+                          <div className="w-full h-full border-2 border-dashed border-white/40 rounded-xl flex items-center justify-center text-white/60 text-xs text-center p-2">
+                            Upload an image to see it here
+                          </div>
+                        )}
+                      </div>
+                    )}
                   </div>
                 </div>
               </div>
