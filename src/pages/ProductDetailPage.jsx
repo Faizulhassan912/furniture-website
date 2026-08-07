@@ -325,9 +325,10 @@ function ProductDetailPage() {
               </div>
             )}
 
-            <p className="mt-4 text-text-light leading-relaxed">
-              {product.description}
-            </p>
+            <div 
+              className="mt-4 text-text-light leading-relaxed [&>ul]:list-disc [&>ul]:pl-5 [&>ul>li]:mb-1"
+              dangerouslySetInnerHTML={{ __html: product.description }}
+            />
 
 
             {/* Specifications */}
