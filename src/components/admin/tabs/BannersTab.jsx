@@ -214,6 +214,9 @@ function BannersTab() {
                             const selectedProduct = products.find(p => `/collection/${p.slug}` === val);
                             if (selectedProduct) {
                               newBanner.buttonText = `View ${selectedProduct.name}`;
+                              if (selectedProduct.images && selectedProduct.images.length > 0) {
+                                newBanner.bgImage = selectedProduct.images[0];
+                              }
                             }
                           } else if (val === '/collection') {
                             newBanner.buttonText = 'Shop Collection';
