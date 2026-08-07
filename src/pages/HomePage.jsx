@@ -57,12 +57,12 @@ const HeroSection = ({ data }) => {
           <span className="inline-block px-4 py-1.5 bg-primary/15 text-primary dark:text-primary-light border border-primary/20 dark:border-primary/30 text-xs sm:text-sm font-semibold rounded-full mb-6 backdrop-blur-md shadow-sm">
             ✨ Custom-Made for Your Little One
           </span>
-          <h1 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-extrabold text-slate-800 dark:text-white leading-tight font-heading max-w-4xl mx-auto md:mx-0">
+          <h1 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-extrabold text-[#1e293b] dark:text-white leading-tight font-heading max-w-4xl mx-auto md:mx-0">
             {data?.heroTitle || (
               <>Magical Furniture for <span className="text-primary dark:text-primary-light">Little Dreamers</span></>
             )}
           </h1>
-          <p className="mt-6 sm:mt-8 text-base sm:text-lg lg:text-xl text-slate-600 dark:text-gray-300 max-w-2xl mx-auto md:mx-0">
+          <p className="mt-6 sm:mt-8 text-base sm:text-lg lg:text-xl text-[#475569] dark:text-[#d1d5db] max-w-2xl mx-auto md:mx-0">
             {data?.heroSubtitle || "Custom-crafted, safe, and beautifully designed furniture for your child's perfect room."}
           </p>
           <div className="mt-8 sm:mt-10 flex flex-row gap-2 sm:gap-4 w-full sm:w-auto justify-center md:justify-start items-center">
@@ -70,7 +70,7 @@ const HeroSection = ({ data }) => {
               <ShoppingBag className="w-4 h-4 mr-1.5 sm:mr-2 sm:w-5 sm:h-5 md:hidden" />
               Explore Collection
             </Link>
-            <Link to="/contact" className="flex-1 sm:flex-none inline-flex items-center justify-center font-semibold rounded-full transition-all duration-300 cursor-pointer shadow-lg hover:-translate-y-1 text-xs sm:text-lg px-4 py-3 sm:px-10 sm:py-4 bg-white dark:bg-white/10 border-2 border-primary dark:border-white/40 text-primary dark:text-white hover:bg-primary hover:text-white dark:hover:bg-white/20 backdrop-blur-md">
+            <Link to="/contact" className="flex-1 sm:flex-none inline-flex items-center justify-center font-semibold rounded-full transition-all duration-300 cursor-pointer shadow-lg hover:-translate-y-1 text-xs sm:text-lg px-4 py-3 sm:px-10 sm:py-4 bg-white dark:bg-white/10 border-2 border-primary dark:border-white/40 text-[#0ea5e9] dark:text-white hover:bg-primary hover:text-white dark:hover:bg-white/20 backdrop-blur-md">
               <MessageCircle className="w-4 h-4 mr-1.5 sm:mr-2 sm:w-5 sm:h-5 md:hidden" />
               Custom Order
             </Link>
