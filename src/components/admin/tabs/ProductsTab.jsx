@@ -11,6 +11,7 @@ function ProductsTab() {
   const [editingProduct, setEditingProduct] = useState(null);
   const [imagePreviews, setImagePreviews] = useState([]);
   const [isSaving, setIsSaving] = useState(false);
+  const [isLoadingAI, setIsLoadingAI] = useState(false);
 
   const [categories, setCategories] = useState([]);
   const [colorInput, setColorInput] = useState('');
@@ -156,6 +157,44 @@ function ProductsTab() {
       setAlertModal({ isOpen: true, title: 'Error', message: 'An error occurred while saving.', type: 'error' });
     } finally {
       setIsSaving(false);
+    }
+  };
+
+  const generateDescriptionWithAI = async () => {
+    if (!formData.files || formData.files.length === 0) {
+      setAlertModal({ isOpen: true, title: 'Error', message: 'Please upload a new image file from your device first to use the AI generator.', type: 'error' });
+      return;
+    }
+
+    setIsLoadingAI(true);
+    const token = localStorage.getItem('adminToken');
+    const submitData = new FormData();
+    submitData.append('image', formData.files[0]);
+
+    try {
+      const res = await fetch('/api/ai/generate-description', {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${token}`
+        },
+        body: submitData
+      });
+
+      const data = await res.json();
+      if (res.ok) {
+        setFormData(prev => ({
+          ...prev,
+          name: data.title || prev.name,
+          description: data.description || prev.description
+        }));
+      } else {
+        setAlertModal({ isOpen: true, title: 'Error', message: data.message || 'Error generating description', type: 'error' });
+      }
+    } catch (error) {
+      console.error('Error with AI generation:', error);
+      setAlertModal({ isOpen: true, title: 'Error', message: 'Failed to connect to AI service.', type: 'error' });
+    } finally {
+      setIsLoadingAI(false);
     }
   };
 
@@ -382,6 +421,16 @@ function ProductsTab() {
                       title="Select product images"
                     />
                   </div>
+                  {formData.files && formData.files.length > 0 && (
+                    <button 
+                      type="button" 
+                      onClick={generateDescriptionWithAI}
+                      disabled={isLoadingAI}
+                      className="mt-3 w-full py-2 bg-gradient-to-r from-purple-500 to-indigo-600 hover:from-purple-600 hover:to-indigo-700 text-white rounded-xl font-bold flex items-center justify-center gap-2 transition-colors disabled:opacity-70 shadow-sm"
+                    >
+                      {isLoadingAI ? <Loader2 size={16} className="animate-spin" /> : <span>✨ Auto-Generate Title & Description with AI</span>}
+                    </button>
+                  )}
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-12 gap-4">

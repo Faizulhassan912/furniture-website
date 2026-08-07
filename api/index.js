@@ -46,6 +46,7 @@ import reviewRoutes from './_routes/reviewRoutes.js';
 import contentRoutes from './_routes/contentRoutes.js';
 import dashboardRoutes from './_routes/dashboardRoutes.js';
 import uploadRoutes from './_routes/uploadRoutes.js';
+import aiRoutes from './_routes/aiRoutes.js';
 
 // Setup routes
 app.use('/api/auth', authRoutes);
@@ -57,6 +58,7 @@ app.use('/api/reviews', reviewRoutes);
 app.use('/api/content', contentRoutes);
 app.use('/api/dashboard', dashboardRoutes);
 app.use('/api/upload', uploadRoutes);
+app.use('/api/ai', aiRoutes);
 
 app.get('/api/test', (req, res) => {
   res.json({
