@@ -14,8 +14,8 @@ router.post('/generate-description', protect, admin, upload.single('image'), asy
     const imageUrl = req.file.path; // Cloudinary URL
     
     // Check if API key is configured
-    if (!process.env.GEMINI_API_KEY) {
-      return res.status(500).json({ message: 'GEMINI_API_KEY is not configured on the server.' });
+    if (!process.env.ADMIN_GEMINI_KEY) {
+      return res.status(500).json({ message: 'ADMIN_GEMINI_KEY is not configured on the server.' });
     }
 
     // Fetch the image from Cloudinary to get the ArrayBuffer for Gemini
@@ -72,7 +72,13 @@ Example JSON output:
 Provide ONLY the JSON response without markdown formatting like \`\`\`json.
     `;
 
-    const text = await generateWithKeyRotation([prompt, ...imageParts], "gemini-flash-latest");
+    const text = await generateWithKeyRotation(
+      [prompt, ...imageParts], 
+      "gemini-flash-latest", 
+      process.env.ADMIN_GEMINI_KEY, 
+      "admin"
+    );
+    
     
     // Parse the JSON. Gemini might wrap it in markdown block.
     let cleanJson = text.trim();

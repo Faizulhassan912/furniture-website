@@ -91,7 +91,12 @@ ${productContext}
     const lastMessage = messages[messages.length - 1];
     fullPrompt += `CUSTOMER (Current Message): ${lastMessage.text}\n\nS. Support:`;
 
-    const text = await generateWithKeyRotation(fullPrompt);
+    const text = await generateWithKeyRotation(
+      fullPrompt,
+      'gemini-flash-latest',
+      process.env.GEMINI_API_KEY,
+      'chat'
+    );
 
     res.json({ reply: text });
   } catch (error) {

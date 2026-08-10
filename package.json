@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node api/index.js",
     "dev": "concurrently \"npm run server\" \"vite\"",
-    "server": "node api/index.js",
+    "server": "node --watch api/index.js",
     "build": "vite build",
     "lint": "oxlint",
     "preview": "vite preview"

@@ -47,7 +47,6 @@ const ChatWidget = () => {
     setIsLoading(true);
 
     try {
-      setHasInteracted(true);
       const response = await fetch('/api/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
