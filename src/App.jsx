@@ -25,9 +25,9 @@ const AdminDashboard = lazy(() => import('./pages/admin/AdminDashboard'));
 
 // These are lightweight UI elements, keep them eager-loaded
 import WhatsAppButton from './components/ui/WhatsAppButton';
-import BackToTop from './components/ui/BackToTop';
 import CookieBanner from './components/ui/CookieBanner';
 import CartSidebar from './components/cart/CartSidebar';
+import ChatWidget from './components/ui/ChatWidget';
 
 // Minimal loading spinner shown while a page chunk downloads
 const PageLoader = () => (
@@ -69,7 +69,7 @@ function App() {
       {!isAdminRoute && (
         <>
           <WhatsAppButton />
-          <BackToTop />
+          <ChatWidget />
           <CookieBanner />
           <CartSidebar />
         </>

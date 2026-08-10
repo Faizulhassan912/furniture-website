@@ -13,6 +13,13 @@ dist-ssr
 dev-dist
 *.local
 .env
+.env.*
+*.env
+api/.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
 
 # Editor directories and files
 .vscode/*

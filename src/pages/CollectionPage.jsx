@@ -5,12 +5,14 @@ import PageTransition from '../components/layout/PageTransition';
 import SkeletonCard from '../components/ui/SkeletonCard';
 import { useCart } from '../context/CartContext';
 import { useProducts } from '../hooks/useProducts';
-import { SearchX, Sparkles } from 'lucide-react';
+import { Search, X, SearchX, Sparkles } from 'lucide-react';
 import OptimizedImage from '../components/ui/OptimizedImage';
 
 function CollectionPage() {
   const [searchParams] = useSearchParams();
   const initialCategory = searchParams.get('category') || 'All';
+  const { addToCart } = useCart();
+
   const [activeCategory, setActiveCategory] = useState(initialCategory);
   const [searchTerm, setSearchTerm] = useState('');
   const [debouncedSearch, setDebouncedSearch] = useState('');
@@ -18,14 +20,13 @@ function CollectionPage() {
   const [maxPrice, setMaxPrice] = useState('');
 
   const [zoomedImage, setZoomedImage] = useState(null);
-
-
   const [categories, setCategories] = useState(['All']);
-  const { addToCart } = useCart();
 
-  // Debounce search term
+  // Real-time live search debounce (300ms)
   useEffect(() => {
-    const timer = setTimeout(() => setDebouncedSearch(searchTerm), 500);
+    const timer = setTimeout(() => {
+      setDebouncedSearch(searchTerm.trim());
+    }, 300);
     return () => clearTimeout(timer);
   }, [searchTerm]);
 
@@ -302,20 +303,30 @@ function CollectionPage() {
               </svg>
               <span className="hidden sm:inline">{isSidebarOpen ? "Hide Filters" : "Show Filters"}</span>
             </button>
-            {/* Animated Search Bar */}
-            <div className="relative flex-1 sm:flex-none sm:w-[350px] focus-within:sm:w-[500px] transition-all duration-500 ease-out">
-              <span className="absolute inset-y-0 left-4 flex items-center text-text/50 pointer-events-none">
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                </svg>
-              </span>
-              <input
-                type="text"
-                placeholder="Search products..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full pl-11 pr-4 py-3.5 bg-bg-card border border-border rounded-xl focus:ring-2 focus:ring-accent focus:border-accent outline-none transition-all shadow-sm text-text placeholder:text-text/50"
-              />
+            {/* Live Real-time Search Bar */}
+            <div className="relative flex-1 sm:flex-none sm:w-[360px] focus-within:sm:w-[460px] transition-all duration-300 ease-out">
+              <div className="relative flex items-center bg-white dark:bg-bg-card rounded-xl p-1.5 border border-border focus-within:border-primary focus-within:ring-2 focus-within:ring-primary/20 shadow-sm transition-all duration-300">
+                <div className="flex items-center justify-center w-9 h-9 text-text-light ml-1 shrink-0">
+                  <Search className="w-4 h-4 text-primary" />
+                </div>
+                <input
+                  type="text"
+                  placeholder="Search products, beds, wardrobes, categories..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className="flex-1 bg-transparent border-none outline-none px-3 text-text placeholder:text-text/50 text-sm focus:ring-0"
+                />
+                {searchTerm && (
+                  <button
+                    type="button"
+                    onClick={() => setSearchTerm('')}
+                    className="p-1.5 text-text-light hover:text-text hover:bg-bg-alt rounded-lg transition-colors mr-1 shrink-0"
+                    title="Clear search"
+                  >
+                    <X className="w-4 h-4" />
+                  </button>
+                )}
+              </div>
             </div>
           </div>
 
@@ -487,7 +498,7 @@ function CollectionPage() {
 
             {/* Product Grid (Right Side) */}
             <div className={`transition-all duration-500 w-full ${isSidebarOpen ? 'lg:w-3/4' : 'lg:w-full'}`}>
-              {((isLoading || productsLoading) && page === 1) ? (
+              {(productsLoading && page === 1) ? (
                 <div className={`grid grid-cols-2 sm:grid-cols-2 gap-3 sm:gap-6 ${isSidebarOpen ? 'xl:grid-cols-3' : 'lg:grid-cols-3 xl:grid-cols-4'}`}>
                   {[1, 2, 3, 4, 5, 6, 7, 8].map((i) => (
                     <SkeletonCard key={i} />
@@ -504,6 +515,8 @@ function CollectionPage() {
                     onClick={() => {
                       setSearchTerm('');
                       setActiveCategory('All');
+                      setMinPrice('');
+                      setMaxPrice('');
                     }}
                     className="mt-6 bg-accent text-bg-card px-6 py-2.5 rounded-full font-bold hover:opacity-90 transition-all shadow-sm cursor-pointer"
                   >

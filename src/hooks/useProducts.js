@@ -22,7 +22,6 @@ export function useProducts(filters = {}) {
       if (filters.limit) params.append('limit', filters.limit);
       
       const queryString = params.toString() ? `?${params.toString()}` : '';
-
       const res = await fetch(`/api/products${queryString}`);
       if (!res.ok) {
         throw new Error('Failed to fetch products');
@@ -62,3 +61,4 @@ export function useProducts(filters = {}) {
 
   return { products, loading, error, total, hasMore, refetch: fetchProducts };
 }
+

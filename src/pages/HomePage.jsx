@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Button from '../components/ui/Button';
 import SectionHeading from '../components/ui/SectionHeading';
 import SEO from '../components/SEO';
@@ -31,6 +31,7 @@ const HeroSection = ({ data }) => {
 
   const [currentHeroImage, setCurrentHeroImage] = useState(0);
   const [isZoomOpen, setIsZoomOpen] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const intervalId = setInterval(() => {
@@ -40,7 +41,7 @@ const HeroSection = ({ data }) => {
   }, [heroImages.length]);
 
   return (
-    <section className="relative flex items-center bg-bg-alt overflow-x-hidden">
+    <section className="relative flex items-center justify-center bg-bg-alt overflow-x-hidden min-h-[calc(100vh-5rem)] lg:min-h-[calc(100vh-5.5rem)] py-2 sm:py-4 lg:py-6">
       {/* Mobile Background Image Slider (hidden on md and up) */}
       <div className="absolute inset-0 z-0 md:hidden">
         {heroImages.map((img, index) => (
@@ -51,38 +52,40 @@ const HeroSection = ({ data }) => {
         ))}
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full py-12 sm:py-16 lg:py-12 pt-16 sm:pt-20 min-h-[60vh] sm:min-h-[80vh] flex flex-col md:flex-row items-center justify-center md:justify-between gap-12">
+      <div className="max-w-[1440px] mx-auto px-4 sm:px-8 lg:px-12 xl:px-16 relative z-10 w-full flex flex-col md:flex-row items-center justify-between gap-8 lg:gap-12 xl:gap-16 my-auto">
         {/* Text Content */}
-        <div className="w-full md:w-1/2 text-center md:text-left flex flex-col items-center md:items-start justify-center">
-          <span className="inline-block px-4 py-1.5 bg-primary/15 text-primary dark:text-primary-light border border-primary/20 dark:border-primary/30 text-xs sm:text-sm font-semibold rounded-full mb-6 backdrop-blur-md shadow-sm">
+        <div className="w-full md:w-1/2 xl:w-5/12 text-center md:text-left flex flex-col items-center md:items-start justify-center">
+          <span className="inline-block px-4 sm:px-5 py-1.5 sm:py-2 bg-primary/15 text-primary dark:text-primary-light border border-primary/25 dark:border-primary/35 text-xs sm:text-sm md:text-base font-bold rounded-full mb-4 sm:mb-6 backdrop-blur-md shadow-sm">
             ✨ Custom-Made for Your Little One
           </span>
-          <h1 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-extrabold text-[#1e293b] dark:text-white leading-tight font-heading max-w-4xl mx-auto md:mx-0">
+          <h1 className="text-4xl sm:text-5xl md:text-5xl lg:text-6xl xl:text-7xl font-extrabold text-[#1e293b] dark:text-white leading-[1.12] tracking-tight font-heading max-w-2xl mx-auto md:mx-0">
             {data?.heroTitle || (
               <>Magical Furniture for <span className="text-primary dark:text-primary-light">Little Dreamers</span></>
             )}
           </h1>
-          <p className="mt-6 sm:mt-8 text-base sm:text-lg lg:text-xl text-[#475569] dark:text-[#d1d5db] max-w-2xl mx-auto md:mx-0">
+          <p className="mt-4 sm:mt-6 text-base sm:text-lg lg:text-xl text-[#475569] dark:text-[#cbd5e1] max-w-xl mx-auto md:mx-0 leading-relaxed">
             {data?.heroSubtitle || "Custom-crafted, safe, and beautifully designed furniture for your child's perfect room."}
           </p>
-          <div className="mt-8 sm:mt-10 flex flex-row gap-2 sm:gap-4 w-full sm:w-auto justify-center md:justify-start items-center">
-            <Link to="/collection" className="flex-1 sm:flex-none inline-flex items-center justify-center font-semibold rounded-full transition-all duration-300 cursor-pointer shadow-xl hover:shadow-2xl hover:-translate-y-1 bg-primary hover:bg-primary-dark text-white text-xs sm:text-lg px-4 py-3 sm:px-10 sm:py-4">
-              <ShoppingBag className="w-4 h-4 mr-1.5 sm:mr-2 sm:w-5 sm:h-5 md:hidden" />
-              Explore Collection
-            </Link>
-            <Link to="/contact" className="flex-1 sm:flex-none inline-flex items-center justify-center font-semibold rounded-full transition-all duration-300 cursor-pointer shadow-lg hover:-translate-y-1 text-xs sm:text-lg px-4 py-3 sm:px-10 sm:py-4 bg-white dark:bg-white/10 border-2 border-primary dark:border-white/40 text-[#0ea5e9] dark:text-white hover:bg-primary hover:text-white dark:hover:bg-white/20 backdrop-blur-md">
-              <MessageCircle className="w-4 h-4 mr-1.5 sm:mr-2 sm:w-5 sm:h-5 md:hidden" />
-              Custom Order
-            </Link>
+          <div className="mt-7 sm:mt-9 flex flex-col w-full sm:max-w-xl mx-auto md:mx-0">
+            <div className="flex flex-row gap-3 sm:gap-5 w-full justify-center md:justify-start items-center">
+              <Link to="/collection" className="flex-1 sm:flex-none inline-flex items-center justify-center font-bold rounded-full transition-all duration-300 cursor-pointer shadow-lg hover:shadow-xl hover:-translate-y-0.5 bg-bg-card text-text border-2 border-border hover:border-primary text-sm sm:text-base lg:text-lg px-6 py-3.5 sm:px-8 sm:py-4 lg:px-9 lg:py-4">
+                <ShoppingBag className="w-5 h-5 sm:w-6 sm:h-6 mr-2" />
+                All Products
+              </Link>
+              <Link to="/contact" className="flex-1 sm:flex-none inline-flex items-center justify-center font-bold rounded-full transition-all duration-300 cursor-pointer shadow-md hover:shadow-lg hover:-translate-y-0.5 text-sm sm:text-base lg:text-lg px-6 py-3.5 sm:px-8 sm:py-4 lg:px-9 lg:py-4 bg-transparent border-2 border-primary/30 text-primary hover:bg-primary/5">
+                <MessageCircle className="w-5 h-5 sm:w-6 sm:h-6 mr-2" />
+                Custom Order
+              </Link>
+            </div>
           </div>
         </div>
         
         {/* Desktop Image Frame - Tilted Card Layout */}
-        <div className="hidden md:flex w-full md:w-1/2 relative min-h-[500px] lg:min-h-[600px] items-center justify-center pl-4 lg:pl-12 mt-8 md:mt-0">
+        <div className="hidden md:flex w-full md:w-1/2 xl:w-7/12 relative min-h-[440px] lg:min-h-[520px] xl:min-h-[580px] items-center justify-center pl-0 lg:pl-6">
           
           {/* Main Tilted Image Container */}
           <div 
-            className="relative w-[95%] lg:w-[100%] aspect-video lg:aspect-[4/3] rounded-3xl lg:rounded-[2.5rem] overflow-hidden shadow-2xl z-10 border-[6px] border-bg-card/60 dark:border-border/40 group cursor-pointer transform -rotate-2 hover:rotate-0 transition-all duration-500 hover:scale-105 animate-[float_6s_ease-in-out_infinite]"
+            className="relative w-full max-w-[560px] lg:max-w-[640px] xl:max-w-[700px] aspect-[4/3] rounded-3xl lg:rounded-[2.5rem] overflow-hidden shadow-2xl z-10 border-[6px] lg:border-[8px] border-bg-card/70 dark:border-border/50 group cursor-pointer transform -rotate-1 hover:rotate-0 transition-all duration-500 hover:scale-[1.03] animate-[float_6s_ease-in-out_infinite]"
             onClick={() => setIsZoomOpen(true)}
           >
             <div className="w-full h-full relative bg-bg-alt">
@@ -101,8 +104,8 @@ const HeroSection = ({ data }) => {
             </div>
           </div>
 
-          {/* Decorative Spark Icon (as seen in screenshot) */}
-          <div className="absolute bottom-16 right-4 z-20 text-primary/30 dark:text-white/20 pointer-events-none animate-pulse">
+          {/* Decorative Spark Icon */}
+          <div className="absolute bottom-8 right-2 z-20 text-primary/30 dark:text-white/20 pointer-events-none animate-pulse">
             <Sparkles className="w-12 h-12" />
           </div>
 

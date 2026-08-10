@@ -3,6 +3,8 @@ import Product from '../_models/Product.js';
 import Category from '../_models/Category.js';
 import { protect } from '../_middleware/auth.js';
 import { upload } from '../_config/cloudinary.js';
+import fs from 'fs';
+import path from 'path';
 
 const router = express.Router();
 
@@ -28,6 +30,132 @@ router.get('/shuffle', async (req, res) => {
   }
 });
 
+// @desc    Temporary script to fix bulk prices
+// @route   GET /api/products/fix-prices
+// @access  Public (Temporary)
+router.get('/fix-prices', async (req, res) => {
+  try {
+    // Queen Size Bunk Bed
+    await Product.updateMany(
+      { $or: [{ category: { $regex: /Queen Size Bunk Bed/i } }, { name: { $regex: /Queen Size Bunk Bed/i } }] },
+      { $set: { price: 65000, 'dimensions.length': 90, 'dimensions.width': 78, 'dimensions.height': 66 } }
+    );
+    
+    // Pilors Bunk Bed
+    await Product.updateMany(
+      { $or: [{ category: { $regex: /Pilor.*Bunk Bed/i } }, { name: { $regex: /Pilor.*Bunk Bed/i } }] },
+      { $set: { price: 60000, 'dimensions.length': 96, 'dimensions.width': 42, 'dimensions.height': 66 } }
+    );
+
+    // Tub Bunk Bed
+    await Product.updateMany(
+      { $or: [{ category: { $regex: /Tub Bunk Bed/i } }, { name: { $regex: /Tub Bunk Bed/i } }] },
+      { $set: { price: 55000, 'dimensions.length': 114, 'dimensions.width': 36, 'dimensions.height': 60 } }
+    );
+
+    // Simple Bunk Bed
+    await Product.updateMany(
+      { $or: [{ category: { $regex: /Simple Bunk Bed/i } }, { name: { $regex: /Simple Bunk Bed/i } }] },
+      { $set: { price: 50000 } }
+    );
+
+    // Car Hut Bunk Bed
+    await Product.updateMany(
+      { $or: [{ category: { $regex: /Car Hut Bunk Bed/i } }, { name: { $regex: /Car Hut Bunk Bed/i } }] },
+      { $set: { price: 50000 } }
+    );
+
+    // Babycots with crib (In DB, category is "With Cabin")
+    await Product.updateMany(
+      { category: "With Cabin" },
+      { $set: { price: 35000, 'dimensions.length': 56, 'dimensions.width': 24, 'dimensions.height': 30 } }
+    );
+    
+    // Babycots without crib (In DB, category is "Without Cabin")
+    await Product.updateMany(
+      { category: "Without Cabin" },
+      { $set: { price: 30000, 'dimensions.length': 48, 'dimensions.width': 24, 'dimensions.height': 30 } }
+    );
+
+    // Remove height from Car Beds
+    await Product.updateMany(
+      { $or: [{ category: { $regex: /car bed/i } }, { name: { $regex: /car bed/i } }] },
+      { $unset: { 'dimensions.height': "" } }
+    );
+
+    // Remove height from Single Beds
+    await Product.updateMany(
+      { $or: [{ category: { $regex: /single bed/i } }, { name: { $regex: /single bed/i } }] },
+      { $unset: { 'dimensions.height': "" } }
+    );
+
+    // Wardrobe Full Double Door
+    await Product.updateMany(
+      { $or: [{ category: { $regex: /Wardrobe Full Double Door/i } }, { name: { $regex: /Wardrobe Full Double Door/i } }] },
+      { $set: { 'dimensions.length': 16, 'dimensions.width': 36, 'dimensions.height': 60 } }
+    );
+
+    // Wardrobe Double Door
+    await Product.updateMany(
+      { $or: [{ category: { $regex: /Wardrobe Double Door/i } }, { name: { $regex: /Wardrobe Double Door/i } }] },
+      { $set: { 'dimensions.length': 16, 'dimensions.width': 36, 'dimensions.height': 60 } }
+    );
+
+    // Wardrobe Triple Door
+    await Product.updateMany(
+      { $or: [{ category: { $regex: /Wardrobe Triple Door/i } }, { name: { $regex: /Wardrobe Triple Door/i } }] },
+      { $set: { 'dimensions.length': 24, 'dimensions.width': 48, 'dimensions.height': 72 } }
+    );
+
+    // Dressing table
+    await Product.updateMany(
+      { $or: [{ category: { $regex: /dressing/i } }, { name: { $regex: /dressing/i } }] },
+      { $unset: { 'dimensions.length': "", 'dimensions.height': "" } }
+    );
+
+    const products = await Product.find({}, 'name category price dimensions');
+    fs.writeFileSync(path.join(process.cwd(), 'api', 'products-dump.json'), JSON.stringify(products, null, 2));
+
+    res.json({ message: "SUCCESS! All prices and dimensions have been updated successfully! Aap is page ko band kar sakte hain." });
+  } catch (error) {
+    res.status(500).json({ message: 'Server Error', error: error.message });
+  }
+});
+
+// @desc    Migrate dimensions from feet to inches
+// @route   GET /api/products/migrate-dimensions
+// @access  Public (Temporary)
+router.get('/migrate-dimensions', async (req, res) => {
+  try {
+    const products = await Product.find({});
+    let updatedCount = 0;
+    for (const p of products) {
+      let changed = false;
+      if (p.dimensions) {
+        if (p.dimensions.length && p.dimensions.length < 20) {
+          p.dimensions.length = p.dimensions.length * 12;
+          changed = true;
+        }
+        if (p.dimensions.width && p.dimensions.width < 20) {
+          p.dimensions.width = p.dimensions.width * 12;
+          changed = true;
+        }
+        if (p.dimensions.height && p.dimensions.height < 20) {
+          p.dimensions.height = p.dimensions.height * 12;
+          changed = true;
+        }
+        if (changed) {
+          await p.save();
+          updatedCount++;
+        }
+      }
+    }
+    res.json({ message: `Successfully converted dimensions to inches for ${updatedCount} products.` });
+  } catch (error) {
+    res.status(500).json({ message: 'Server Error', error: error.message });
+  }
+});
+
 // @desc    Fetch all products (with search and filters)
 // @route   GET /api/products
 // @access  Public
@@ -40,9 +168,14 @@ router.get('/', async (req, res) => {
 
     // 1. Search by name or description
     if (search) {
+      const searchTerms = search.trim().split(/\s+/);
+      const regexes = searchTerms.map(t => new RegExp(t, 'i'));
+      
       query.$or = [
         { name: { $regex: search, $options: 'i' } },
-        { description: { $regex: search, $options: 'i' } }
+        { description: { $regex: search, $options: 'i' } },
+        { category: { $regex: search, $options: 'i' } },
+        { tags: { $in: regexes } }
       ];
     }
 
@@ -144,7 +277,8 @@ router.post('/', protect, upload.array('images', 5), async (req, res) => {
     const createdProduct = await product.save();
     res.status(201).json(createdProduct);
   } catch (error) {
-    res.status(400).json({ message: 'Invalid product data', error: error.message });
+    console.error("Error saving product:", error);
+    res.status(400).json({ message: 'Invalid product data', error: error.message, stack: error.stack });
   }
 });
 

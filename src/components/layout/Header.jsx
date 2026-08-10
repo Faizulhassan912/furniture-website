@@ -80,14 +80,15 @@ function Header() {
 
   return (
     <>
-      {/* Top Promo Bar (Sticky on its own) */}
-      {bannersData?.promoText && (
-        <div className="sticky top-0 z-[60] bg-primary text-text-on-primary text-center py-2 text-sm font-bold tracking-wide w-full shadow-md">
-          {bannersData.promoText}
-        </div>
-      )}
-      
-      <header className="relative z-50 bg-bg-card/90 backdrop-blur-md shadow-sm border-b border-border transition-all duration-300">
+      <div className="fixed top-0 left-0 right-0 z-[60] flex flex-col">
+        {/* Top Promo Bar */}
+        {bannersData?.promoText && (
+          <div className="bg-primary text-text-on-primary text-center py-2 text-sm font-bold tracking-wide w-full shadow-md shrink-0">
+            {bannersData.promoText}
+          </div>
+        )}
+        
+        <header className="relative z-50 bg-bg-card/90 backdrop-blur-md shadow-sm border-b border-border transition-all duration-300 shrink-0">
         <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between py-4">
           {/* Logo */}
@@ -275,6 +276,7 @@ function Header() {
         </div>
       </div>
     </header>
+      </div>
     </>
   );
 }

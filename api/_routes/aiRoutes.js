@@ -1,5 +1,5 @@
 import express from 'express';
-import { GoogleGenerativeAI } from '@google/generative-ai';
+import { generateWithKeyRotation } from '../geminiRotator.js';
 import { upload } from '../_config/cloudinary.js';
 import { protect, admin } from '../_middleware/auth.js';
 
@@ -18,10 +18,6 @@ router.post('/generate-description', protect, admin, upload.single('image'), asy
       return res.status(500).json({ message: 'GEMINI_API_KEY is not configured on the server.' });
     }
 
-    // Initialize Gemini
-    const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
-    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
-
     // Fetch the image from Cloudinary to get the ArrayBuffer for Gemini
     const imageResp = await fetch(imageUrl);
     const arrayBuffer = await imageResp.arrayBuffer();
@@ -37,29 +33,46 @@ router.post('/generate-description', protect, admin, upload.single('image'), asy
       }
     ];
 
+    const categoriesStr = req.body.categories || '[]';
+
     const prompt = `
 You are an expert furniture copywriter and analyst.
 I have uploaded an image of a kids furniture product.
-Please analyze the EXACT structural design, shape, and colors of the furniture in this photo.
-DO NOT hallucinate, guess, or add features, dimensions, or aesthetic details that are not explicitly visible in the image.
-Retain the exact product characteristics. Accuracy is the highest priority.
+Please analyze the structural design, shape, colors, and type of furniture in this photo.
+DO NOT hallucinate dimensions or features not explicitly visible.
 
 Return a JSON object containing:
-1. "title": A catchy, SEO-friendly title for this product.
-2. "description": An accurate product description based ONLY on what is visible in the image. The description MUST be formatted as an HTML unordered list (<ul><li>...</li></ul>) containing bullet points of the features, so it looks good on the frontend.
+1. "title": A highly creative, innovative, aesthetic, and catchy title for the product (MAX 5-7 WORDS). Make it sound premium.
+2. "description": An accurate description based ONLY on what is visible. Use plain text bullet points (starting with "- " or "• "), separated by newlines. DO NOT USE ANY HTML TAGS.
+3. "category": The main category of the furniture. If possible, choose EXACTLY one from this list of parent categories: ${categoriesStr}. If none fit perfectly, make your best guess.
+4. "subCategory": A sub-category if applicable. If you chose a parent category from the list, choose a child category from the same list whose 'parent' matches the chosen 'category'. Otherwise, make your best guess.
+5. "material": The primary material visible (e.g., "Lamination Wood Sheet", "Solid Wood"). Default to "Lamination Wood Sheet" if unsure.
+6. "finish": The type of finish used (e.g., "Non-Toxic Paint", "Matte", "Glossy"). Default to "Non-Toxic Paint" if unsure.
+7. "ageGroup": The target age group (e.g., "3-8 years", "0-2 years", "All Ages") based on the design.
+8. "price": A dummy price in numbers (e.g., 15000, 25000) that seems reasonable for this type of furniture in Pakistani Rupees (PKR). Return ONLY the number.
+9. "dimensions": An object containing estimated dimensions in inches based on standard sizes for the category. Include "length", "width", and "height" as numbers (e.g., {"length": 78, "width": 42, "height": 65}).
 
 Example JSON output:
 {
-  "title": "Magical Sky Bunk Bed",
-  "description": "<ul><li>Sturdy wooden frame</li><li>Integrated storage drawers</li></ul>"
+  "title": "Magical Sky Yellow Bunk Bed",
+  "description": "• Sturdy wooden frame\\n• Integrated storage drawers\\n• Safe rounded edges",
+  "category": "Beds",
+  "subCategory": "Bunk Beds",
+  "material": "Lamination Wood Sheet",
+  "finish": "Non-Toxic Paint",
+  "ageGroup": "3-8 years",
+  "price": 25000,
+  "dimensions": {
+    "length": 78,
+    "width": 42,
+    "height": 65
+  }
 }
 
 Provide ONLY the JSON response without markdown formatting like \`\`\`json.
     `;
 
-    const result = await model.generateContent([prompt, ...imageParts]);
-    const response = await result.response;
-    const text = response.text();
+    const text = await generateWithKeyRotation([prompt, ...imageParts], "gemini-flash-latest");
     
     // Parse the JSON. Gemini might wrap it in markdown block.
     let cleanJson = text.trim();
@@ -81,7 +94,7 @@ Provide ONLY the JSON response without markdown formatting like \`\`\`json.
     res.json(parsedData);
   } catch (error) {
     console.error('AI Generation Error:', error);
-    res.status(500).json({ message: 'Failed to generate description', error: error.message });
+    res.status(500).json({ message: 'Failed to generate description', error: error.toString(), stack: error.stack });
   }
 });
 

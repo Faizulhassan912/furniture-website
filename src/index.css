@@ -18,7 +18,7 @@
     background: transparent;
   }
   .custom-scrollbar::-webkit-scrollbar-thumb {
-    @apply bg-border rounded-full hover:bg-primary/50 transition-colors;
+    @apply bg-primary/30 rounded-full hover:bg-primary/60 transition-colors;
   }
   
   .no-scrollbar::-webkit-scrollbar {

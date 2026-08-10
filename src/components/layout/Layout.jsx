@@ -13,7 +13,7 @@ function Layout() {
   return (
     <div className="flex flex-col min-h-screen relative">
       <Header />
-      <main className="flex-1">
+      <main className="flex-1 pt-16 sm:pt-20 lg:pt-24">
         <Outlet />
       </main>
       <Footer />

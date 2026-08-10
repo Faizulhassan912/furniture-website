@@ -17,7 +17,7 @@ function ProductsTab() {
   const [colorInput, setColorInput] = useState('');
 
   const [formData, setFormData] = useState({
-    name: '', slug: '', parentCategory: 'Beds', subCategory: '', description: '', image: '', files: [], material: '', ageGroup: '', price: '', featured: false
+    name: '', slug: '', parentCategory: 'Beds', subCategory: '', description: '', image: '', files: [], material: '', ageGroup: '', price: '', featured: false, finish: '', length: '', width: '', height: ''
   });
 
   const fetchProductsAndCategories = async () => {
@@ -72,7 +72,7 @@ function ProductsTab() {
 
   const openAddModal = () => {
     setEditingProduct(null);
-    setFormData({ name: '', slug: '', parentCategory: categories.find(c => c.parent === 'None')?.name || '', subCategory: '', description: '', image: '', files: [], material: '', ageGroup: '', price: '', featured: false });
+    setFormData({ name: '', slug: '', parentCategory: categories.find(c => c.parent === 'None')?.name || '', subCategory: '', description: '', image: '', files: [], material: '', ageGroup: '', price: '', featured: false, finish: '', length: '', width: '', height: '' });
     setImagePreviews([]);
     setIsModalOpen(true);
   };
@@ -89,7 +89,11 @@ function ProductsTab() {
       parentCategory: pCat,
       subCategory: sCat,
       files: [],
-      price: product.price || ''
+      price: product.price || '',
+      finish: product.finish || '',
+      length: product.dimensions?.length || '',
+      width: product.dimensions?.width || '',
+      height: product.dimensions?.height || ''
     });
     setImagePreviews(product.images && product.images.length > 0 ? product.images : (product.image ? [product.image] : []));
     setIsModalOpen(true);
@@ -122,6 +126,10 @@ function ProductsTab() {
     submitData.append('price', formData.price || 0);
     submitData.append('stock', 0); // User requested to replace stock with subcategory
     submitData.append('featured', formData.featured || false);
+    submitData.append('finish', formData.finish || '');
+    submitData.append('length', formData.length || '');
+    submitData.append('width', formData.width || '');
+    submitData.append('height', formData.height || '');
 
     if (formData.files && formData.files.length > 0) {
       formData.files.forEach(f => {
@@ -170,6 +178,7 @@ function ProductsTab() {
     const token = localStorage.getItem('adminToken');
     const submitData = new FormData();
     submitData.append('image', formData.files[0]);
+    submitData.append('categories', JSON.stringify(categories.map(c => ({ name: c.name, parent: c.parent }))));
 
     try {
       const res = await fetch('/api/ai/generate-description', {
@@ -181,12 +190,28 @@ function ProductsTab() {
       });
 
       const data = await res.json();
+      
       if (res.ok) {
-        setFormData(prev => ({
-          ...prev,
-          name: data.title || prev.name,
-          description: data.description || prev.description
-        }));
+        let newFormData = { 
+          ...formData, 
+          name: data.title || formData.name, 
+          description: data.description || formData.description 
+        };
+
+        if (data.category) newFormData.parentCategory = data.category;
+        if (data.subCategory) newFormData.subCategory = data.subCategory;
+        if (data.material) newFormData.material = data.material;
+        if (data.ageGroup) newFormData.ageGroup = data.ageGroup;
+        if (data.price) newFormData.price = data.price;
+        if (data.finish) newFormData.finish = data.finish;
+        if (data.dimensions) {
+          newFormData.length = data.dimensions.length || '';
+          newFormData.width = data.dimensions.width || '';
+          newFormData.height = data.dimensions.height || '';
+        }
+
+        setFormData(newFormData);
+        setAlertModal({ isOpen: true, title: 'Success', message: 'Details generated and filled successfully!', type: 'success' });
       } else {
         setAlertModal({ isOpen: true, title: 'Error', message: data.message || 'Error generating description', type: 'error' });
       }
@@ -426,9 +451,9 @@ function ProductsTab() {
                       type="button" 
                       onClick={generateDescriptionWithAI}
                       disabled={isLoadingAI}
-                      className="mt-3 w-full py-2 bg-gradient-to-r from-purple-500 to-indigo-600 hover:from-purple-600 hover:to-indigo-700 text-white rounded-xl font-bold flex items-center justify-center gap-2 transition-colors disabled:opacity-70 shadow-sm"
+                      className="mt-3 w-full py-2.5 bg-bg-alt hover:bg-primary hover:text-white border-2 border-primary text-primary rounded-xl font-bold flex items-center justify-center gap-2 transition-all disabled:opacity-50 shadow-sm cursor-pointer"
                     >
-                      {isLoadingAI ? <Loader2 size={16} className="animate-spin" /> : <span>✨ Auto-Generate Title & Description with AI</span>}
+                      {isLoadingAI ? <Loader2 size={16} className="animate-spin" /> : <span>Auto-Generate Title & Description with AI</span>}
                     </button>
                   )}
                 </div>
@@ -460,13 +485,36 @@ function ProductsTab() {
                     <label className="block text-sm font-bold text-text mb-1">Price (Rs)</label>
                     <input type="number" value={formData.price} onChange={e => setFormData({...formData, price: e.target.value})} className="w-full px-4 py-2 rounded-xl bg-bg-alt border border-border outline-none focus:border-primary transition-colors" />
                   </div>
-                  <div className="sm:col-span-6">
+                  <div className="sm:col-span-4">
                     <label className="block text-sm font-bold text-text mb-1">Material</label>
                     <input type="text" value={formData.material} onChange={e => setFormData({...formData, material: e.target.value})} className="w-full px-4 py-2 rounded-xl bg-bg-alt border border-border outline-none focus:border-primary transition-colors" />
                   </div>
-                  <div className="sm:col-span-6">
+                  <div className="sm:col-span-4">
+                    <label className="block text-sm font-bold text-text mb-1">Finish</label>
+                    <input type="text" value={formData.finish} onChange={e => setFormData({...formData, finish: e.target.value})} className="w-full px-4 py-2 rounded-xl bg-bg-alt border border-border outline-none focus:border-primary transition-colors" />
+                  </div>
+                  <div className="sm:col-span-4">
                     <label className="block text-sm font-bold text-text mb-1">Age Group</label>
                     <input type="text" value={formData.ageGroup} onChange={e => setFormData({...formData, ageGroup: e.target.value})} className="w-full px-4 py-2 rounded-xl bg-bg-alt border border-border outline-none focus:border-primary transition-colors" />
+                  </div>
+                  
+                  {/* Dimensions */}
+                  <div className="sm:col-span-12 mt-2">
+                    <label className="block text-sm font-bold text-text mb-2">Dimensions (Inches)</label>
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                      <div>
+                        <input type="number" placeholder="Length" value={formData.length} onChange={e => setFormData({...formData, length: e.target.value})} className="w-full px-4 py-2 rounded-xl bg-bg-alt border border-border outline-none focus:border-primary transition-colors" />
+                        <span className="text-xs text-text-light block mt-1 ml-1">Length</span>
+                      </div>
+                      <div>
+                        <input type="number" placeholder="Width" value={formData.width} onChange={e => setFormData({...formData, width: e.target.value})} className="w-full px-4 py-2 rounded-xl bg-bg-alt border border-border outline-none focus:border-primary transition-colors" />
+                        <span className="text-xs text-text-light block mt-1 ml-1">Width</span>
+                      </div>
+                      <div>
+                        <input type="number" placeholder="Height" value={formData.height} onChange={e => setFormData({...formData, height: e.target.value})} className="w-full px-4 py-2 rounded-xl bg-bg-alt border border-border outline-none focus:border-primary transition-colors" />
+                        <span className="text-xs text-text-light block mt-1 ml-1">Height</span>
+                      </div>
+                    </div>
                   </div>
                   <div className="sm:col-span-12 flex items-center mt-2">
                     <label className="flex items-center gap-3 cursor-pointer group">

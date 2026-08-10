@@ -325,10 +325,16 @@ function ProductDetailPage() {
               </div>
             )}
 
-            <div 
-              className="mt-4 text-text-light leading-relaxed [&>ul]:list-disc [&>ul]:pl-5 [&>ul>li]:mb-1"
-              dangerouslySetInnerHTML={{ __html: product.description }}
-            />
+              {product.description?.includes('<') ? (
+                <div 
+                  className="mt-4 text-text-light leading-relaxed [&>ul]:list-disc [&>ul]:pl-5 [&>ul>li]:mb-1"
+                  dangerouslySetInnerHTML={{ __html: product.description }}
+                />
+              ) : (
+                <div className="mt-4 text-text-light leading-relaxed whitespace-pre-wrap">
+                  {product.description}
+                </div>
+              )}
 
 
             {/* Specifications */}
@@ -344,8 +350,8 @@ function ProductDetailPage() {
                   <p className="font-semibold text-text mt-1 text-xs sm:text-sm break-words">
                     {product.dimensions?.length 
                       ? (product.dimensions?.height 
-                          ? `${product.dimensions.length} Ft × ${product.dimensions.width} Ft × ${product.dimensions.height} Ft` 
-                          : `${product.dimensions.length} Ft × ${product.dimensions.width} Ft`)
+                          ? `${product.dimensions.length}" × ${product.dimensions.width}" × ${product.dimensions.height}"` 
+                          : `${product.dimensions.length}" × ${product.dimensions.width}"`)
                       : 'Custom Dimensions Available'}
                   </p>
                 </div>
