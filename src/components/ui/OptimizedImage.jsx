@@ -13,11 +13,13 @@ export default function OptimizedImage({
   className = '', 
   width = 800, 
   loading = 'lazy',
+  fetchPriority = undefined,
   sizes = '(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw',
   ...props 
 }) {
   const optimizedSrc = optimizeCloudinaryUrl(src, width);
   const srcSet = getCloudinarySrcSet(src);
+  const effectivePriority = fetchPriority || (loading === 'eager' ? 'high' : undefined);
 
   return (
     <img
@@ -27,6 +29,7 @@ export default function OptimizedImage({
       alt={alt}
       className={className}
       loading={loading}
+      fetchPriority={effectivePriority}
       decoding="async"
       {...props}
     />

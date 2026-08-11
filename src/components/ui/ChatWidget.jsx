@@ -158,7 +158,11 @@ const ChatWidget = () => {
                 </p>
               </div>
             </div>
-            <button onClick={() => setIsOpen(false)} className="text-white/80 hover:text-white transition-colors cursor-pointer relative z-10 p-1 bg-white/10 hover:bg-white/20 rounded-full">
+            <button 
+              onClick={() => setIsOpen(false)} 
+              aria-label="Close Chat Window"
+              className="text-white/80 hover:text-white transition-colors cursor-pointer relative z-10 p-1 bg-white/10 hover:bg-white/20 rounded-full"
+            >
               <X size={18} />
             </button>
           </div>
@@ -239,6 +243,7 @@ const ChatWidget = () => {
                 }
               }}
               placeholder="Type your message..."
+              aria-label="Chat message input"
               className="flex-1 bg-bg-alt border border-border rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary text-text resize-none custom-scrollbar"
               rows={2}
               disabled={isLoading}
@@ -247,6 +252,7 @@ const ChatWidget = () => {
               type="submit" 
               onClick={(e) => { if (!input.trim() || isLoading) e.preventDefault(); }}
               disabled={!input.trim() || isLoading}
+              aria-label="Send Message"
               className="w-10 h-10 mb-1 rounded-full bg-primary text-white flex items-center justify-center hover:bg-primary-dark transition-colors disabled:opacity-50 disabled:cursor-not-allowed shrink-0 cursor-pointer"
             >
               <Send size={18} className="ml-1" />
@@ -291,7 +297,7 @@ const ChatWidget = () => {
                       setShowTeaser(false);
                     }}
                     className="text-text-light hover:text-text p-0.5 sm:p-1 rounded-full hover:bg-bg-alt transition-colors"
-                    title="Dismiss"
+                    aria-label="Dismiss AI Assistant suggestion"
                   >
                     <X size={13} />
                   </button>
@@ -320,7 +326,7 @@ const ChatWidget = () => {
           <button
             onClick={() => { setIsOpen(true); setShowTeaser(false); }}
             className="w-14 h-14 sm:w-16 sm:h-16 bg-gradient-to-br from-primary to-primary-light text-white rounded-full flex items-center justify-center shadow-[0_8px_25px_rgba(var(--color-primary),0.5)] hover:shadow-[0_12px_35px_rgba(var(--color-primary),0.8)] hover:scale-110 active:scale-95 transition-all duration-300 cursor-pointer relative group"
-            aria-label="Open Chat"
+            aria-label="Open AI Customer Assistant Chat"
           >
             {/* Ripple effect rings */}
             <div className="absolute inset-0 rounded-full border-2 border-primary/60 animate-ping opacity-60 pointer-events-none"></div>

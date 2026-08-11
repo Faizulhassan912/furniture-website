@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+Disallow: /portal
+Disallow: /portal/*
+Disallow: /api/*
+
+Sitemap: https://sns-kids-furniture.vercel.app/sitemap.xml
