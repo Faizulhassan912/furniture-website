@@ -81,18 +81,7 @@ export default defineConfig({
     },
   },
   build: {
-    target: 'esnext',
-    minify: 'esbuild',
-    cssCodeSplit: true,
-    chunkSizeWarningLimit: 600,
-    rollupOptions: {
-      output: {
-        manualChunks: {
-          'vendor-react': ['react', 'react-dom', 'react-router-dom', 'react-helmet-async'],
-          'vendor-animation': ['framer-motion'],
-          'vendor-icons': ['lucide-react']
-        }
-      }
-    }
+    chunkSizeWarningLimit: 1600,
+    cssCodeSplit: true
   }
 })
