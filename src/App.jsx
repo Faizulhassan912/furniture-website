@@ -65,15 +65,15 @@ function App() {
           </Route>
         </Routes>
       </AnimatePresence>
+      </Suspense>
       {!isAdminRoute && (
-        <>
+        <Suspense fallback={null}>
           <WhatsAppButton />
           <ChatWidget />
           <CookieBanner />
           <CartSidebar />
-        </>
+        </Suspense>
       )}
-      </Suspense>
       </CartProvider>
     </SettingsProvider>
   );
