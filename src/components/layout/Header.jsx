@@ -96,6 +96,7 @@ function Header() {
             <Link
               to="/"
               className="flex items-center gap-2 hover:opacity-90 transition-opacity"
+              aria-label="S&S Kids Furniture Home"
             >
               <Logo className="h-10 w-auto text-primary" text={settings?.settings?.siteName || "S&S Kids"} logoUrl={settings?.logo || null} />
             </Link>
@@ -200,6 +201,7 @@ function Header() {
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               className="p-2 rounded-xl text-text bg-bg-alt hover:bg-primary hover:text-white transition-colors cursor-pointer border border-border shadow-sm z-[110]"
               aria-label="Toggle navigation menu"
+              aria-expanded={mobileMenuOpen}
             >
               <div className="w-6 h-5 relative flex flex-col justify-between">
                 <span className={`w-full h-0.5 bg-current rounded-full transition-all duration-300 origin-center ${mobileMenuOpen ? 'rotate-45 translate-y-[9px]' : ''}`} />

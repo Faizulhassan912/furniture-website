@@ -46,7 +46,14 @@ const HeroSection = ({ data }) => {
       <div className="absolute inset-0 z-0 md:hidden">
         {heroImages.map((img, index) => (
           <div key={img} className={`absolute inset-0 transition-opacity duration-1000 ${index === currentHeroImage ? 'opacity-100' : 'opacity-0'}`}>
-            <OptimizedImage src={img} alt="Background" className="w-full h-full object-cover" width={1200} loading="eager" />
+            <OptimizedImage 
+              src={img} 
+              alt="Background" 
+              className="w-full h-full object-cover" 
+              width={1200} 
+              loading={index === 0 ? "eager" : "lazy"} 
+              fetchPriority={index === 0 ? "high" : "low"}
+            />
             <div className="absolute inset-0 bg-white/90 dark:bg-bg/85 backdrop-blur-sm" />
           </div>
         ))}
@@ -55,7 +62,7 @@ const HeroSection = ({ data }) => {
       <div className="max-w-[1440px] mx-auto px-4 sm:px-8 lg:px-12 xl:px-16 relative z-10 w-full flex flex-col md:flex-row items-center justify-between gap-8 lg:gap-12 xl:gap-16 my-auto">
         {/* Text Content */}
         <div className="w-full md:w-1/2 xl:w-5/12 text-center md:text-left flex flex-col items-center md:items-start justify-center">
-          <span className="inline-block px-4 sm:px-5 py-1.5 sm:py-2 bg-primary/15 text-primary dark:text-primary-light border border-primary/25 dark:border-primary/35 text-xs sm:text-sm md:text-base font-bold rounded-full mb-4 sm:mb-6 backdrop-blur-md shadow-sm">
+          <span className="inline-block px-4 sm:px-5 py-1.5 sm:py-2 bg-primary/15 text-primary-dark dark:text-primary-light border border-primary/30 text-xs sm:text-sm md:text-base font-bold rounded-full mb-4 sm:mb-6 backdrop-blur-md shadow-sm">
             ✨ Custom-Made for Your Little One
           </span>
           <h1 className="text-4xl sm:text-5xl md:text-5xl lg:text-6xl xl:text-7xl font-extrabold text-[#1e293b] dark:text-white leading-[1.12] tracking-tight font-heading max-w-2xl mx-auto md:mx-0">
@@ -63,7 +70,7 @@ const HeroSection = ({ data }) => {
               <>Magical Furniture for <span className="text-primary dark:text-primary-light">Little Dreamers</span></>
             )}
           </h1>
-          <p className="mt-4 sm:mt-6 text-base sm:text-lg lg:text-xl text-[#475569] dark:text-[#cbd5e1] max-w-xl mx-auto md:mx-0 leading-relaxed">
+          <p className="mt-4 sm:mt-6 text-base sm:text-lg lg:text-xl text-[#334155] dark:text-[#cbd5e1] max-w-xl mx-auto md:mx-0 leading-relaxed">
             {data?.heroSubtitle || "Custom-crafted, safe, and beautifully designed furniture for your child's perfect room."}
           </p>
           <div className="mt-7 sm:mt-9 flex flex-col w-full sm:max-w-xl mx-auto md:mx-0">
@@ -91,7 +98,14 @@ const HeroSection = ({ data }) => {
             <div className="w-full h-full relative bg-bg-alt">
               {heroImages.map((img, index) => (
                 <div key={img} className={`absolute inset-0 transition-opacity duration-1000 ${index === currentHeroImage ? 'opacity-100' : 'opacity-0'}`}>
-                  <OptimizedImage src={img} alt="Kids Furniture" className="w-full h-full object-cover transition-transform duration-700 ease-in-out group-hover:scale-110" width={1200} loading="eager" />
+                  <OptimizedImage 
+                    src={img} 
+                    alt="Kids Furniture" 
+                    className="w-full h-full object-cover transition-transform duration-700 ease-in-out group-hover:scale-110" 
+                    width={1200} 
+                    loading={index === 0 ? "eager" : "lazy"} 
+                    fetchPriority={index === 0 ? "high" : "low"}
+                  />
                 </div>
               ))}
             </div>

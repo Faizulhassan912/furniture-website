@@ -46,10 +46,12 @@ function Footer() {
             <button 
               className="w-full flex items-center justify-between md:cursor-default" 
               onClick={() => toggleSection('links')}
+              aria-expanded={openSection === 'links'}
+              aria-label="Toggle Quick Links section"
             >
-              <h4 className="text-sm font-bold uppercase tracking-wider text-text md:mb-5">
+              <h3 className="text-sm font-bold uppercase tracking-wider text-text md:mb-5">
                 Quick Links
-              </h4>
+              </h3>
               <ChevronIcon isOpen={openSection === 'links'} />
             </button>
             <div className={`overflow-hidden transition-all duration-300 ease-in-out md:!max-h-none md:!opacity-100 md:mt-0 ${openSection === 'links' ? 'max-h-[300px] opacity-100 mt-4' : 'max-h-0 opacity-0'}`}>
@@ -73,10 +75,12 @@ function Footer() {
             <button 
               className="w-full flex items-center justify-between md:cursor-default" 
               onClick={() => toggleSection('support')}
+              aria-expanded={openSection === 'support'}
+              aria-label="Toggle Support & Legal section"
             >
-              <h4 className="text-sm font-bold uppercase tracking-wider text-text md:mb-5">
+              <h3 className="text-sm font-bold uppercase tracking-wider text-text md:mb-5">
                 Support & Legal
-              </h4>
+              </h3>
               <ChevronIcon isOpen={openSection === 'support'} />
             </button>
             <div className={`overflow-hidden transition-all duration-300 ease-in-out md:!max-h-none md:!opacity-100 md:mt-0 ${openSection === 'support' ? 'max-h-[300px] opacity-100 mt-4' : 'max-h-0 opacity-0'}`}>
@@ -105,10 +109,12 @@ function Footer() {
             <button 
               className="w-full flex items-center justify-between md:cursor-default" 
               onClick={() => toggleSection('contact')}
+              aria-expanded={openSection === 'contact'}
+              aria-label="Toggle Contact Us section"
             >
-              <h4 className="text-sm font-bold uppercase tracking-wider text-text md:mb-5">
+              <h3 className="text-sm font-bold uppercase tracking-wider text-text md:mb-5">
                 Contact Us
-              </h4>
+              </h3>
               <ChevronIcon isOpen={openSection === 'contact'} />
             </button>
             <div className={`overflow-hidden transition-all duration-300 ease-in-out md:!max-h-none md:!opacity-100 md:mt-0 ${openSection === 'contact' ? 'max-h-[300px] opacity-100 mt-4' : 'max-h-0 opacity-0'}`}>
@@ -132,9 +138,9 @@ function Footer() {
           {/* Social & CTA Column */}
           <div className="mt-4 md:mt-0 text-center md:text-left md:col-span-2 lg:col-span-5 lg:mt-4 flex flex-col lg:flex-row items-center justify-between pt-6 border-t border-border">
             <div>
-              <h4 className="text-sm font-bold uppercase tracking-wider mb-4 text-text hidden lg:block">
+              <h3 className="text-sm font-bold uppercase tracking-wider mb-4 text-text hidden lg:block">
                 Follow Us
-              </h4>
+              </h3>
               <div className="flex gap-3 mb-6 lg:mb-0 justify-center md:justify-start">
                 {[
                   { 

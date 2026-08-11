@@ -39,12 +39,14 @@ function CookieBanner() {
         <div className="flex items-center gap-3 shrink-0 w-full md:w-auto">
           <button
             onClick={handleDecline}
+            aria-label="Decline optional cookies"
             className="flex-1 md:flex-none px-5 py-2.5 rounded-xl border-2 border-border text-text font-semibold hover:bg-bg-alt transition-colors cursor-pointer"
           >
             Decline
           </button>
           <button
             onClick={handleAccept}
+            aria-label="Accept all cookies"
             className="flex-1 md:flex-none px-5 py-2.5 rounded-xl bg-primary text-white font-bold hover:bg-primary-dark transition-colors shadow-sm cursor-pointer"
           >
             Accept All

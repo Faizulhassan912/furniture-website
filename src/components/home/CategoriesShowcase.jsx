@@ -42,11 +42,14 @@ function CategoriesShowcase({ title, subtitle }) {
               key={category.name} 
               to={`/collection?category=${encodeURIComponent(category.name)}`}
               className="group flex-none w-[65vw] sm:w-[22rem] snap-center sm:snap-start block"
+              aria-label={`Explore ${category.name} category`}
             >
               <div className="relative aspect-[4/3] rounded-3xl overflow-hidden shadow-sm bg-bg-alt border border-border/50 mb-4 group-hover:shadow-md transition-shadow flex items-center justify-center p-4">
                 <img 
                   src={category.image} 
                   alt={category.name}
+                  loading="lazy"
+                  decoding="async"
                   className="w-full h-full object-contain transition-transform duration-700 group-hover:scale-105"
                 />
               </div>
