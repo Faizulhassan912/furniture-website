@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, lazy, Suspense } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import Button from '../components/ui/Button';
 import SectionHeading from '../components/ui/SectionHeading';
@@ -7,11 +7,13 @@ import PageTransition from '../components/layout/PageTransition';
 import { useProducts } from '../hooks/useProducts';
 import { useCart } from '../context/CartContext';
 
-import CategoriesShowcase from '../components/home/CategoriesShowcase';
-import PromoBanner from '../components/home/PromoBanner';
-import WhyChooseUs from '../components/home/WhyChooseUs';
-import Testimonials from '../components/home/Testimonials';
-import FAQSection from '../components/home/FAQSection';
+// Below-the-fold sections lazy-loaded for maximum speed and sub-second TBT
+const CategoriesShowcase = lazy(() => import('../components/home/CategoriesShowcase'));
+const PromoBanner = lazy(() => import('../components/home/PromoBanner'));
+const WhyChooseUs = lazy(() => import('../components/home/WhyChooseUs'));
+const Testimonials = lazy(() => import('../components/home/Testimonials'));
+const FAQSection = lazy(() => import('../components/home/FAQSection'));
+
 import { ShoppingBag, MessageCircle, ZoomIn, Sparkles, X } from 'lucide-react';
 import DynamicIcon from '../components/ui/DynamicIcon';
 import OptimizedImage from '../components/ui/OptimizedImage';
@@ -360,24 +362,26 @@ function HomePage() {
       />
       
       {/* 🚀 Dynamic Rendering Loop */}
-      {layout
-        .filter(section => section.visible)
-        .map((section, idx) => {
-          const SectionComponent = componentMap[section.id];
-          if (!SectionComponent) return null;
+      <Suspense fallback={null}>
+        {layout
+          .filter(section => section.visible)
+          .map((section, idx) => {
+            const SectionComponent = componentMap[section.id];
+            if (!SectionComponent) return null;
 
-          if (section.id === 'banners') {
-            return <SectionComponent key={`${section.id}-${idx}`} bannersData={bannersData} />;
-          }
-          if (section.id === 'categories') {
-             return <SectionComponent key={`${section.id}-${idx}`} title={homeData?.categoriesTitle} subtitle={homeData?.categoriesSubtitle} />;
-          }
-          if (section.id === 'why') {
-             return <SectionComponent key={`${section.id}-${idx}`} title={homeData?.whyChooseUsTitle} subtitle={homeData?.whyChooseUsSubtitle} featuresData={homeData?.whyChooseUs} />;
-          }
+            if (section.id === 'banners') {
+              return <SectionComponent key={`${section.id}-${idx}`} bannersData={bannersData} />;
+            }
+            if (section.id === 'categories') {
+               return <SectionComponent key={`${section.id}-${idx}`} title={homeData?.categoriesTitle} subtitle={homeData?.categoriesSubtitle} />;
+            }
+            if (section.id === 'why') {
+               return <SectionComponent key={`${section.id}-${idx}`} title={homeData?.whyChooseUsTitle} subtitle={homeData?.whyChooseUsSubtitle} featuresData={homeData?.whyChooseUs} />;
+            }
 
-          return <SectionComponent key={`${section.id}-${idx}`} data={homeData} />;
-        })}
+            return <SectionComponent key={`${section.id}-${idx}`} data={homeData} />;
+          })}
+      </Suspense>
 
     </PageTransition>
   );

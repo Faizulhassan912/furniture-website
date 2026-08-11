@@ -23,11 +23,11 @@ const NotFoundPage = lazy(() => import('./pages/NotFoundPage'));
 const AdminLogin = lazy(() => import('./pages/admin/AdminLogin'));
 const AdminDashboard = lazy(() => import('./pages/admin/AdminDashboard'));
 
-// These are lightweight UI elements, keep them eager-loaded
-import WhatsAppButton from './components/ui/WhatsAppButton';
-import CookieBanner from './components/ui/CookieBanner';
-import CartSidebar from './components/cart/CartSidebar';
-import ChatWidget from './components/ui/ChatWidget';
+// Lazy load floating non-critical widgets to free main thread during initial paint
+const WhatsAppButton = lazy(() => import('./components/ui/WhatsAppButton'));
+const CookieBanner = lazy(() => import('./components/ui/CookieBanner'));
+const CartSidebar = lazy(() => import('./components/cart/CartSidebar'));
+const ChatWidget = lazy(() => import('./components/ui/ChatWidget'));
 
 // Minimal loading spinner shown while a page chunk downloads
 const PageLoader = () => (
@@ -65,7 +65,6 @@ function App() {
           </Route>
         </Routes>
       </AnimatePresence>
-      </Suspense>
       {!isAdminRoute && (
         <>
           <WhatsAppButton />
@@ -74,6 +73,7 @@ function App() {
           <CartSidebar />
         </>
       )}
+      </Suspense>
       </CartProvider>
     </SettingsProvider>
   );
