@@ -4,4 +4,4 @@ Disallow: /portal
 Disallow: /portal/*
 Disallow: /api/*
 
-Sitemap: https://sns-kids-furniture.vercel.app/sitemap.xml
+Sitemap: https://skids-furniture.vercel.app/sitemap.xml
