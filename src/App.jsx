@@ -70,7 +70,6 @@ function App() {
         <Suspense fallback={null}>
           <WhatsAppButton />
           <ChatWidget />
-          <CookieBanner />
           <CartSidebar />
         </Suspense>
       )}

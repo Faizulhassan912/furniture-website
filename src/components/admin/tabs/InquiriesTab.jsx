@@ -251,54 +251,54 @@ function InquiriesTab() {
       {/* Convert to Order Modal */}
       <AnimatePresence>
         {isModalOpen && selectedInquiry && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => setIsModalOpen(false)} className="absolute inset-0 bg-black/40 backdrop-blur-sm" />
-            <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.95 }} className="bg-bg-card w-full max-w-2xl rounded-3xl shadow-2xl relative z-10 border border-border flex flex-col max-h-[90vh]">
-              <div className="p-6 border-b border-border flex justify-between items-center">
-                <h3 className="text-xl font-bold text-text flex items-center gap-2"><ShoppingCart size={24} className="text-primary" /> Convert to Order</h3>
-                <button onClick={() => setIsModalOpen(false)} className="text-text-light hover:text-red-500 cursor-pointer p-1 rounded-lg hover:bg-red-50 transition-colors">
-                  <X size={24} />
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 overflow-y-auto">
+            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => setIsModalOpen(false)} className="fixed inset-0 bg-black/50 backdrop-blur-sm" />
+            <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.95 }} className="bg-bg-card w-full max-w-xl sm:max-w-2xl rounded-2xl sm:rounded-3xl shadow-2xl relative z-10 border border-border flex flex-col max-h-[92vh] sm:max-h-[88vh] my-auto">
+              <div className="p-4 sm:p-6 border-b border-border flex justify-between items-center shrink-0">
+                <h3 className="text-lg sm:text-xl font-bold text-text flex items-center gap-2"><ShoppingCart size={22} className="text-primary" /> Convert to Order</h3>
+                <button onClick={() => setIsModalOpen(false)} className="text-text-light hover:text-red-500 cursor-pointer p-1.5 rounded-lg hover:bg-red-50 transition-colors">
+                  <X size={20} />
                 </button>
               </div>
               
-              <form onSubmit={handleConvertToOrder} className="p-6 overflow-y-auto space-y-6">
+              <form onSubmit={handleConvertToOrder} className="p-4 sm:p-6 overflow-y-auto space-y-4 sm:space-y-5 flex-1 custom-scrollbar">
                 
-                <div className="bg-primary/5 p-4 rounded-xl border border-primary/20">
-                  <p className="text-sm text-primary font-bold mb-1">Customer Details (Auto-filled)</p>
-                  <p className="text-text font-semibold">{selectedInquiry.name} <span className="text-text-light font-normal">| {selectedInquiry.phone}</span></p>
+                <div className="bg-primary/5 p-3.5 sm:p-4 rounded-xl border border-primary/20">
+                  <p className="text-xs sm:text-sm text-primary font-bold mb-1">Customer Details (Auto-filled)</p>
+                  <p className="text-sm sm:text-base text-text font-semibold">{selectedInquiry.name} <span className="text-text-light font-normal text-xs sm:text-sm">| {selectedInquiry.phone}</span></p>
                 </div>
 
                 {/* Toggle Order Type */}
                 <div className="flex bg-bg-alt p-1 rounded-xl border border-border">
-                  <button type="button" onClick={() => setOrderType('standard')} className={`flex-1 py-2 text-sm font-bold rounded-lg transition-colors cursor-pointer ${orderType === 'standard' ? 'bg-bg-card shadow text-primary' : 'text-text-light hover:text-text'}`}>
+                  <button type="button" onClick={() => setOrderType('standard')} className={`flex-1 py-2 text-xs sm:text-sm font-bold rounded-lg transition-colors cursor-pointer ${orderType === 'standard' ? 'bg-bg-card shadow text-primary' : 'text-text-light hover:text-text'}`}>
                     Standard Product
                   </button>
-                  <button type="button" onClick={() => setOrderType('custom')} className={`flex-1 py-2 text-sm font-bold rounded-lg transition-colors cursor-pointer ${orderType === 'custom' ? 'bg-bg-card shadow text-primary' : 'text-text-light hover:text-text'}`}>
+                  <button type="button" onClick={() => setOrderType('custom')} className={`flex-1 py-2 text-xs sm:text-sm font-bold rounded-lg transition-colors cursor-pointer ${orderType === 'custom' ? 'bg-bg-card shadow text-primary' : 'text-text-light hover:text-text'}`}>
                     Custom Design
                   </button>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                   {orderType === 'standard' ? (
-                    <div className="col-span-2">
-                      <label className="block text-sm font-bold text-text mb-1">Product Name</label>
-                      <input type="text" value={formData.product} onChange={e => setFormData({...formData, product: e.target.value})} className="w-full px-4 py-2 rounded-xl bg-bg-alt border border-border outline-none focus:border-primary transition-colors" />
+                    <div className="sm:col-span-2">
+                      <label className="block text-xs sm:text-sm font-bold text-text mb-1">Product Name</label>
+                      <input type="text" value={formData.product} onChange={e => setFormData({...formData, product: e.target.value})} className="w-full px-3.5 py-2 sm:px-4 sm:py-2.5 rounded-xl bg-bg-alt border border-border outline-none focus:border-primary text-sm transition-colors" />
                     </div>
                   ) : (
                     <>
-                      <div className="col-span-2">
-                        <label className="block text-sm font-bold text-text mb-1">Custom Design Details</label>
-                        <textarea value={formData.customDesc} onChange={e => setFormData({...formData, customDesc: e.target.value})} rows="3" required placeholder="Describe the custom furniture..." className="w-full px-4 py-2 rounded-xl bg-bg-alt border border-border outline-none focus:border-primary transition-colors resize-none"></textarea>
+                      <div className="sm:col-span-2">
+                        <label className="block text-xs sm:text-sm font-bold text-text mb-1">Custom Design Details</label>
+                        <textarea value={formData.customDesc} onChange={e => setFormData({...formData, customDesc: e.target.value})} rows="3" required placeholder="Describe the custom furniture..." className="w-full px-3.5 py-2 sm:px-4 sm:py-2.5 rounded-xl bg-bg-alt border border-border outline-none focus:border-primary text-sm transition-colors resize-none"></textarea>
                       </div>
-                      <div className="col-span-2">
-                        <label className="block text-sm font-bold text-text mb-1">Reference Image (Optional)</label>
-                        <div className="w-full h-32 border-2 border-dashed border-border rounded-xl flex flex-col items-center justify-center relative hover:bg-bg-alt transition-colors overflow-hidden cursor-pointer">
+                      <div className="sm:col-span-2">
+                        <label className="block text-xs sm:text-sm font-bold text-text mb-1">Reference Image (Optional)</label>
+                        <div className="w-full h-28 sm:h-32 border-2 border-dashed border-border rounded-xl flex flex-col items-center justify-center relative hover:bg-bg-alt transition-colors overflow-hidden cursor-pointer">
                           {formData.customImage ? (
                             <img src={formData.customImage} className="w-full h-full object-cover" alt="ref" />
                           ) : (
                             <div className="flex flex-col items-center">
-                              <UploadCloud size={24} className="text-text-light mb-1" />
-                              <span className="text-sm font-bold text-text-light cursor-pointer">Click to Upload</span>
+                              <UploadCloud size={22} className="text-text-light mb-1" />
+                              <span className="text-xs sm:text-sm font-bold text-text-light cursor-pointer">Click to Upload</span>
                             </div>
                           )}
                           <input type="file" accept="image/*" onChange={handleImageChange} className="absolute inset-0 opacity-0 cursor-pointer" />
@@ -308,22 +308,22 @@ function InquiriesTab() {
                   )}
 
                   <div>
-                    <label className="block text-sm font-bold text-text mb-1">Agreed Amount (Rs)</label>
-                    <input required type="number" value={formData.amount} onChange={e => setFormData({...formData, amount: e.target.value})} placeholder="45000" className="w-full px-4 py-2 rounded-xl bg-bg-alt border border-border outline-none focus:border-primary transition-colors" />
+                    <label className="block text-xs sm:text-sm font-bold text-text mb-1">Agreed Amount (Rs)</label>
+                    <input required type="number" value={formData.amount} onChange={e => setFormData({...formData, amount: e.target.value})} placeholder="45000" className="w-full px-3.5 py-2 sm:px-4 sm:py-2.5 rounded-xl bg-bg-alt border border-border outline-none focus:border-primary text-sm transition-colors" />
                   </div>
                   <div>
-                    <label className="block text-sm font-bold text-text mb-1">Advance Received (Optional)</label>
-                    <input type="number" value={formData.advance} onChange={e => setFormData({...formData, advance: e.target.value})} placeholder="10000" className="w-full px-4 py-2 rounded-xl bg-bg-alt border border-border outline-none focus:border-primary transition-colors" />
+                    <label className="block text-xs sm:text-sm font-bold text-text mb-1">Advance Received (Optional)</label>
+                    <input type="number" value={formData.advance} onChange={e => setFormData({...formData, advance: e.target.value})} placeholder="10000" className="w-full px-3.5 py-2 sm:px-4 sm:py-2.5 rounded-xl bg-bg-alt border border-border outline-none focus:border-primary text-sm transition-colors" />
                   </div>
-                  <div className="col-span-2">
-                    <label className="block text-sm font-bold text-text mb-1">Delivery Address</label>
-                    <textarea rows="2" value={formData.address} onChange={e => setFormData({...formData, address: e.target.value})} required placeholder="Full shipping address..." className="w-full px-4 py-2 rounded-xl bg-bg-alt border border-border outline-none focus:border-primary transition-colors resize-none"></textarea>
+                  <div className="sm:col-span-2">
+                    <label className="block text-xs sm:text-sm font-bold text-text mb-1">Delivery Address</label>
+                    <textarea rows="2" value={formData.address} onChange={e => setFormData({...formData, address: e.target.value})} required placeholder="Full shipping address..." className="w-full px-3.5 py-2 sm:px-4 sm:py-2.5 rounded-xl bg-bg-alt border border-border outline-none focus:border-primary text-sm transition-colors resize-none"></textarea>
                   </div>
                 </div>
 
-                <div className="flex justify-end gap-3 pt-4 border-t border-border mt-6">
-                  <button type="button" onClick={() => setIsModalOpen(false)} className="px-6 py-2 rounded-xl text-text font-bold hover:bg-bg-alt transition-colors cursor-pointer">Cancel</button>
-                  <button type="submit" disabled={isConverting} className="px-6 py-2 rounded-xl bg-primary text-white font-bold hover:bg-primary-dark transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2">
+                <div className="flex flex-col-reverse sm:flex-row justify-end gap-2 sm:gap-3 pt-4 border-t border-border mt-4 sm:mt-6 shrink-0">
+                  <button type="button" onClick={() => setIsModalOpen(false)} className="w-full sm:w-auto px-5 py-2.5 rounded-xl text-text font-bold hover:bg-bg-alt transition-colors cursor-pointer text-center text-sm sm:text-base">Cancel</button>
+                  <button type="submit" disabled={isConverting} className="w-full sm:w-auto px-6 py-2.5 rounded-xl bg-primary text-white font-bold hover:bg-primary-dark transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 text-sm sm:text-base">
                     {isConverting && <Loader2 size={16} className="animate-spin" />}
                     Confirm & Move to Orders
                   </button>

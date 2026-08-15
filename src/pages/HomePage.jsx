@@ -55,14 +55,14 @@ const HeroSection = ({ data }) => {
               loading={index === 0 ? "eager" : "lazy"} 
               fetchPriority={index === 0 ? "high" : "low"}
             />
-            <div className="absolute inset-0 bg-white/90 dark:bg-bg/85 backdrop-blur-sm" />
+            <div className="absolute inset-0 bg-gradient-to-b from-white/50 via-white/35 to-white/65 dark:from-bg/80 dark:via-bg/60 dark:to-bg/90" />
           </div>
         ))}
       </div>
 
       <div className="max-w-[1440px] mx-auto px-4 sm:px-8 lg:px-12 xl:px-16 relative z-10 w-full flex flex-col md:flex-row items-center justify-between gap-8 lg:gap-12 xl:gap-16 my-auto">
         {/* Text Content */}
-        <div className="w-full md:w-1/2 xl:w-5/12 text-center md:text-left flex flex-col items-center md:items-start justify-center">
+        <div className="w-full md:w-1/2 xl:w-5/12 text-center md:text-left flex flex-col items-center md:items-start justify-center py-4 px-3 sm:p-6 md:p-0 rounded-3xl md:rounded-none bg-white/40 md:bg-transparent dark:bg-bg/40 dark:md:bg-transparent backdrop-blur-[2px] md:backdrop-blur-none border border-white/60 md:border-none shadow-sm md:shadow-none">
           <span className="inline-block px-4 sm:px-5 py-1.5 sm:py-2 bg-primary/15 text-primary-dark dark:text-primary-light border border-primary/30 text-xs sm:text-sm md:text-base font-bold rounded-full mb-4 sm:mb-6 backdrop-blur-md shadow-sm">
             ✨ Custom-Made for Your Little One
           </span>
