@@ -152,11 +152,11 @@ function CollectionPage() {
   }, []);
 
   const defaultSliderImages = [
-    '/images/bunk-bed-1.jpg',
-    '/images/almary-1.jpg',
-    '/images/single-bed-1.jpg',
-    '/images/car-bed-1.jpg',
-    '/images/bunk-bed-2.jpg'
+    '/images/bunk-bed-1.webp',
+    '/images/almary-1.webp',
+    '/images/single-bed-1.webp',
+    '/images/car-bed-1.webp',
+    '/images/bunk-bed-2.webp'
   ];
 
   const sliderImages = [];

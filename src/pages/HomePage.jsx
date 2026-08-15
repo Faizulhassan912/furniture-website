@@ -27,7 +27,7 @@ const HeroSection = ({ data }) => {
   if (data?.heroImage3) heroImages.push(data.heroImage3);
 
   if (heroImages.length === 0) {
-    heroImages.push('/images/single-bed-2.jpg', '/images/bunk-bed-1.jpg', '/images/almary-1.jpg');
+    heroImages.push('/images/single-bed-2.webp', '/images/bunk-bed-1.webp', '/images/almary-1.webp');
   }
 
   const [currentHeroImage, setCurrentHeroImage] = useState(0);
