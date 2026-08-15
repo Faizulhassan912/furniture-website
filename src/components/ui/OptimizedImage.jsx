@@ -4,6 +4,7 @@
  * 2. Adds loading="lazy" by default (browser skips off-screen images)
  * 3. Adds decoding="async" (browser doesn't block rendering for images)
  * 4. Provides responsive srcSet for Cloudinary images
+ * 5. Sets explicit width/height to prevent layout shift (CLS)
  */
 import { optimizeCloudinaryUrl, getCloudinarySrcSet } from '../../utils/imageOptimizer';
 
@@ -11,7 +12,8 @@ export default function OptimizedImage({
   src, 
   alt = '', 
   className = '', 
-  width = 800, 
+  width = 800,
+  height,
   loading = 'lazy',
   fetchPriority = undefined,
   sizes = '(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw',
@@ -20,6 +22,7 @@ export default function OptimizedImage({
   const optimizedSrc = optimizeCloudinaryUrl(src, width);
   const srcSet = getCloudinarySrcSet(src);
   const effectivePriority = fetchPriority || (loading === 'eager' ? 'high' : undefined);
+  const imgHeight = height || Math.round(width * 0.75); // Default 4:3 aspect ratio
 
   return (
     <img
@@ -31,6 +34,8 @@ export default function OptimizedImage({
       loading={loading}
       fetchPriority={effectivePriority}
       decoding="async"
+      width={width}
+      height={imgHeight}
       {...props}
     />
   );

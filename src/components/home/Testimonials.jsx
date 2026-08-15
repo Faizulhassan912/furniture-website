@@ -79,7 +79,7 @@ function Testimonials() {
                   {(testimonial.customer || testimonial.name || 'U').charAt(0)}
                 </div>
                 <div>
-                  <h4 className="font-bold text-text">{testimonial.customer || testimonial.name}</h4>
+                  <h3 className="font-bold text-text text-base">{testimonial.customer || testimonial.name}</h3>
                   <p className="text-sm text-text-light">{testimonial.product ? `Bought: ${testimonial.product}` : 'Verified Buyer'}</p>
                 </div>
               </div>

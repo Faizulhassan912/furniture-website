@@ -12,13 +12,13 @@ function PromoBanner({ bannersData }) {
     bgImage: null
   };
 
-  const bannerImage = customBanner.bgImage || '/images/almary-1.jpg';
+  const bannerImage = customBanner.bgImage || '/images/almary-1.webp';
 
   if (bannersData?.activeBuilder === 'pre-designed' && bannersData?.previewImage) {
     return (
       <section className="py-8 bg-bg px-4 sm:px-6 lg:px-8">
         <Link to="/collection" className="block max-w-7xl mx-auto rounded-[2.5rem] overflow-hidden shadow-lg group hover:shadow-xl transition-shadow border border-border/50">
-          <img src={bannersData.previewImage} alt="Promo Banner" className="w-full h-auto object-cover transition-transform duration-1000 group-hover:scale-105" />
+          <img src={bannersData.previewImage} alt="Promo Banner" width="1200" height="400" loading="lazy" decoding="async" className="w-full h-auto object-cover transition-transform duration-1000 group-hover:scale-105" />
         </Link>
       </section>
     );
@@ -31,7 +31,7 @@ function PromoBanner({ bannersData }) {
         
         {/* Mobile Background Image (hidden on desktop) */}
         <div className="absolute inset-0 z-0 md:hidden">
-          <img src={bannerImage} alt="Background" className="w-full h-full object-cover" />
+          <img src={bannerImage} alt="Background" width="800" height="600" loading="lazy" decoding="async" className="w-full h-full object-cover" />
           <div className="absolute inset-0 bg-pink/30 backdrop-blur-[1px] bg-gradient-to-t from-pink/70 to-transparent" />
         </div>
 
@@ -64,6 +64,10 @@ function PromoBanner({ bannersData }) {
               <img 
                 src={bannerImage} 
                 alt="Promo Banner" 
+                width="800"
+                height="600"
+                loading="lazy"
+                decoding="async"
                 className="w-full h-full object-contain transition-transform duration-1000 group-hover:scale-105"
               />
             </div>

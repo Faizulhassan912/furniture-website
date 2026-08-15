@@ -59,6 +59,8 @@ function FAQSection() {
               <button
                 className="w-full px-6 py-5 text-left flex justify-between items-center focus:outline-none"
                 onClick={() => setOpenIndex(openIndex === index ? -1 : index)}
+                aria-expanded={openIndex === index}
+                aria-label={`Toggle answer for: ${faq.question}`}
               >
                 <span className="font-bold text-text text-lg">{faq.question}</span>
                 <span className={`text-primary transition-transform duration-300 ${openIndex === index ? 'rotate-180' : ''}`}>

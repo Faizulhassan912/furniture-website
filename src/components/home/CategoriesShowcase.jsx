@@ -48,6 +48,8 @@ function CategoriesShowcase({ title, subtitle }) {
                 <img 
                   src={category.image} 
                   alt={category.name}
+                  width={600}
+                  height={450}
                   loading="lazy"
                   decoding="async"
                   className="w-full h-full object-contain transition-transform duration-700 group-hover:scale-105"
